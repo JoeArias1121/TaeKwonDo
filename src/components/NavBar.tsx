@@ -7,9 +7,9 @@ import {
 import { Link } from "react-router-dom";
 
 export default function NavBar() {
-  const textStyle = "text-xl  p-3 hover: hover:bg-slate-100 hover:rounded-3xl active:rounded-3xl";
+  const textStyle = "text-xl text whitespace-nowrap -center py-5 hover: hover:bg-slate-100 hover:rounded-3xl active:rounded-3xl";
   return (
-    <nav className=" my-3">
+    <nav className="my-3">
       <NavigationMenu className="w-full">
         <NavigationMenuList className="flex w-full text-slate-700 gap-x-10">
           <NavigationMenuItem>

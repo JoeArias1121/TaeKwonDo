@@ -12,7 +12,7 @@ export default function Members() {
   }
 
   return (
-    <div>
+    <div className="flex flex-wrap gap-15  lg:gap-20 justify-center">
       {members}
     </div>
   )

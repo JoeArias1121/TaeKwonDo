@@ -8,9 +8,11 @@ export default function MainLayout() {
       <header className="">
         <Header />
       </header>
-      <main>
-        <NavBar />
-        <Outlet />
+      <main className="flex flex-col items-center">
+        <div className="flex flex-col items-center justify-center w-11/12 md:w-3/4 xl:w-1/2">
+          <NavBar />
+          <Outlet />
+        </div>
       </main>
     </>
   );
