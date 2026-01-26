@@ -5,7 +5,7 @@ import NavBar from "@/components/NavBar";
 export default function MainLayout() {
   return (
     <>
-      <header className="">
+      <header className="flex w-full">
         <Header />
       </header>
       <main className="flex flex-col items-center">

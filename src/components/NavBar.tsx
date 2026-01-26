@@ -7,12 +7,12 @@ import {
 import { useLocation, Link } from "react-router-dom";
 
 export default function NavBar() {
-  const textStyle = `text-xl text-center whitespace-nowrap py-5 hover:bg-slate-200 hover:rounded-3xl active:rounded-3xl transiton-all duration-200`;
+  const textStyle = `text-md p-1 sm:text-xl text-center whitespace-nowrap py-4 hover:bg-slate-200 hover:rounded-3xl active:rounded-3xl transiton-all duration-200`;
   const location = useLocation();
   return (
     <nav className="my-3">
       <NavigationMenu className="w-full">
-        <NavigationMenuList className="flex w-full text-slate-700 gap-x-10">
+        <NavigationMenuList className="flex w-full text-slate-700 gap-1 sm:gap-3">
           <NavigationMenuItem>
             <NavigationMenuLink asChild className={`${textStyle}` + (location.pathname === "/" ? " bg-slate-300" : "")}>
               <Link to="/" >Home</Link>
