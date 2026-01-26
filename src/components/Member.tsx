@@ -1,4 +1,3 @@
-import React from 'react'
 
 export default function Member({ name, avatarUrl }: { name: string; avatarUrl?: string }) {
   return (

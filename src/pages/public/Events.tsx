@@ -1,6 +1,5 @@
 import placeHolderImage from "@/assets/placeHolderImage.png";
 import Event from "@/components/Event";
-import { useState } from "react";
 
 export default function Events() {
   const upcomingEvents = [];
