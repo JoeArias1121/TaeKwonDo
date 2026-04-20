@@ -5,6 +5,11 @@ import Contact from "@/pages/public/Contact";
 import Members from "@/pages/public/Members";
 import Events from "@/pages/public/Events";
 import PublicLayout from "@/layouts/PublicLayout";
+import Login from "@/pages/auth/Login";
+import Signup from "@/pages/auth/Signup";
+import PendingApproval from "@/pages/auth/PendingApproval";
+import Dashboard from "@/pages/admin/Dashboard";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 function App() {
   return (
@@ -16,8 +21,22 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/members" element={<Members />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<h1>404 Not Found</h1>} />
         </Route>
+
+        {/* Standalone Auth Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/pending-approval" element={<PendingApproval />} />
+
+        {/* Protected Admin Routes */}
+        <Route 
+          path="/admin/*" 
+          element={
+            <ProtectedRoute requireApproval={true}>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </>
   );
