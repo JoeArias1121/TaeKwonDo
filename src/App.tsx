@@ -9,7 +9,12 @@ import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
 import PendingApproval from "@/pages/auth/PendingApproval";
 import Dashboard from "@/pages/admin/Dashboard";
+import EventsManager from "@/pages/admin/EventsManager";
+import MembersManager from "@/pages/admin/MembersManager";
+import AboutEditor from "@/pages/admin/AboutEditor";
+import Approvals from "@/pages/admin/Approvals";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import AdminLayout from "@/layouts/AdminLayout";
 
 function App() {
   return (
@@ -30,13 +35,19 @@ function App() {
 
         {/* Protected Admin Routes */}
         <Route 
-          path="/admin/*" 
+          path="/admin" 
           element={
             <ProtectedRoute requireApproval={true}>
-              <Dashboard />
+              <AdminLayout />
             </ProtectedRoute>
           } 
-        />
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="events" element={<EventsManager />} />
+          <Route path="members" element={<MembersManager />} />
+          <Route path="about" element={<AboutEditor />} />
+          <Route path="approvals" element={<Approvals />} />
+        </Route>
       </Routes>
     </>
   );
