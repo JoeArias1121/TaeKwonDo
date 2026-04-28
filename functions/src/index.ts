@@ -35,17 +35,17 @@ const pokeGitHub = async () => {
 // 2. Trigger on Events changes
 export const triggerBuildOnEvents = onDocumentWritten(
   { document: "events/{docId}", secrets: ["GITHUB_TOKEN"] },
-  async (event) => { await pokeGitHub(); }
+  async () => { await pokeGitHub(); }
 );
 
 // 3. Trigger on Members changes
 export const triggerBuildOnMembers = onDocumentWritten(
   { document: "members/{docId}", secrets: ["GITHUB_TOKEN"] },
-  async (event) => { await pokeGitHub(); }
+  async () => { await pokeGitHub(); }
 );
 
 // 4. Trigger on Settings (About Me) changes
 export const triggerBuildOnSettings = onDocumentWritten(
   { document: "settings/{docId}", secrets: ["GITHUB_TOKEN"] },
-  async (event) => { await pokeGitHub(); }
+  async () => { await pokeGitHub(); }
 );

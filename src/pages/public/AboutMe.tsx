@@ -3,7 +3,7 @@ import staticData from "@/data/content.json";
 
 export default function AboutMe() {
   // Use static data if available, otherwise fallback to defaults
-  const data = staticData.aboutMe || {};
+  const data = (staticData.aboutMe || {}) as Record<string, string>;
   
   const aboutData = {
     title: data.title || "Grand Master Ramon",
