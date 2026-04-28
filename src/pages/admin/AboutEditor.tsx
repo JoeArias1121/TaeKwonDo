@@ -4,6 +4,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/lib/firebase";
 import { toast } from "sonner";
 import { Loader2, Save } from "lucide-react";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 export default function AboutEditor() {
   const [loading, setLoading] = useState(true);
@@ -29,8 +30,9 @@ export default function AboutEditor() {
         setBio(data.bio || "");
         setCurrentImageUrl(data.imageUrl || "");
       }
-    } catch (err: any) {
-      toast.error("Failed to load about data: " + err.message);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Failed to load about data: " + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -50,8 +52,15 @@ export default function AboutEditor() {
 
       // If a new image was selected, upload it
       if (imageFile) {
+        const optimizedFile = await optimizeImage(imageFile);
         const storageRef = ref(storage, `settings/about_avatar_${Date.now()}`);
-        await uploadBytes(storageRef, imageFile);
+        
+        const metadata = {
+          contentType: 'image/webp',
+          cacheControl: 'public,max-age=31536000',
+        };
+
+        await uploadBytes(storageRef, optimizedFile, metadata);
         finalImageUrl = await getDownloadURL(storageRef);
         setCurrentImageUrl(finalImageUrl);
       }
@@ -67,8 +76,9 @@ export default function AboutEditor() {
 
       toast.success("About page updated successfully!", { id: loadingToast });
       setImageFile(null); // Reset file input implicitly
-    } catch (err: any) {
-      toast.error("Error saving data: " + err.message, { id: loadingToast });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Error saving data: " + errorMessage, { id: loadingToast });
     } finally {
       setSaving(false);
     }
@@ -83,7 +93,7 @@ export default function AboutEditor() {
   }
 
   return (
-    <div className="w-full h-full font-sans max-w-4xl mx-auto">
+    <div className="w-full min-h-full font-sans max-w-4xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-heading font-black">Edit 'About Me'</h1>
         <p className="text-muted-foreground">Manage the content displayed on your public profile page.</p>

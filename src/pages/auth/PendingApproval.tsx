@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
-import { useAuth } from "@/auth/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/auth/useAuth";
 
 export default function PendingApproval() {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleReturnToLogin = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6">
@@ -23,10 +29,10 @@ export default function PendingApproval() {
                 Return to Site
             </Link>
             <button 
-                onClick={logout}
+                onClick={handleReturnToLogin}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mt-4"
             >
-                Sign out of pending account
+                Return to Login
             </button>
         </div>
       </div>

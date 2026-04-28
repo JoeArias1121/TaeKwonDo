@@ -3,7 +3,8 @@ import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, orderBy 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/lib/firebase";
 import { toast } from "sonner";
-import { Trash2, Plus, X, Image as ImageIcon, Loader2 } from "lucide-react";
+import { Trash2, Plus, X, Image as ImageIcon, Loader2, Edit } from "lucide-react";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 export type EventType = "Competition" | "Fundraising" | "Ceremony";
 
@@ -16,6 +17,8 @@ interface DojoEvent {
   time: string;
   location: string;
   imageUrl: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export default function EventsManager() {
@@ -23,6 +26,7 @@ export default function EventsManager() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   // Form State
   const [title, setTitle] = useState("");
@@ -40,8 +44,9 @@ export default function EventsManager() {
       const snapshot = await getDocs(q);
       const data = snapshot.docs.map((d) => ({ id: d.id, ...d.data() })) as DojoEvent[];
       setEvents(data);
-    } catch (err: any) {
-      toast.error("Failed to load events: " + err.message);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Failed to load events: " + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -52,6 +57,7 @@ export default function EventsManager() {
   }, []);
 
   const resetForm = () => {
+    setEditingId(null);
     setTitle("");
     setDescription("");
     setEventType("Competition");
@@ -62,39 +68,79 @@ export default function EventsManager() {
     setIsModalOpen(false);
   };
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const handleEdit = (evt: DojoEvent) => {
+    setEditingId(evt.id);
+    setTitle(evt.title);
+    setDescription(evt.description);
+    setEventType(evt.eventType);
+    setDate(evt.date);
+    setTime(evt.time);
+    setLocation(evt.location);
+    setImageFile(null); // Wait for a new file, otherwise keep old
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!imageFile) {
-      toast.error("An event image is required!");
+    if (!editingId && !imageFile) {
+      toast.error("An event image is required for new events!");
       return;
     }
     
     setSaving(true);
-    const loadingToast = toast.loading("Uploading image and saving event...");
+    const loadingToast = toast.loading(editingId ? "Updating event..." : "Uploading image and saving event...");
 
     try {
-      // 1. Upload image
-      const storageRef = ref(storage, `events/${Date.now()}_${imageFile.name}`);
-      await uploadBytes(storageRef, imageFile);
-      const imageUrl = await getDownloadURL(storageRef);
+      let finalImageUrl: string | undefined;
+
+      // 1. Upload new image if selected
+      if (imageFile) {
+        const optimizedFile = await optimizeImage(imageFile);
+        const storageRef = ref(storage, `events/${Date.now()}_${imageFile.name.split('.')[0]}.webp`);
+        
+        const metadata = {
+          contentType: 'image/webp',
+          cacheControl: 'public,max-age=31536000',
+        };
+
+        await uploadBytes(storageRef, optimizedFile, metadata);
+        finalImageUrl = await getDownloadURL(storageRef);
+      }
 
       // 2. Save document to firestore
-      await addDoc(collection(db, "events"), {
-        title,
-        description,
-        eventType,
-        date,
-        time,
-        location,
-        imageUrl,
-        createdAt: new Date().toISOString()
-      });
+      if (editingId) {
+        const updateData: Partial<DojoEvent> = {
+          title,
+          description,
+          eventType,
+          date,
+          time,
+          location,
+          updatedAt: new Date().toISOString()
+        };
+        if (finalImageUrl) updateData.imageUrl = finalImageUrl;
 
-      toast.success("Event created successfully!", { id: loadingToast });
+        await updateDoc(doc(db, "events", editingId), updateData);
+        toast.success("Event updated successfully!", { id: loadingToast });
+      } else {
+        await addDoc(collection(db, "events"), {
+          title,
+          description,
+          eventType,
+          date,
+          time,
+          location,
+          imageUrl: finalImageUrl,
+          createdAt: new Date().toISOString()
+        });
+        toast.success("Event created successfully!", { id: loadingToast });
+      }
+
       resetForm();
       fetchEvents();
-    } catch (err: any) {
-      toast.error("Error saving event: " + err.message, { id: loadingToast });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Error saving event: " + errorMessage, { id: loadingToast });
     } finally {
       setSaving(false);
     }
@@ -107,20 +153,21 @@ export default function EventsManager() {
       await deleteDoc(doc(db, "events", id));
       toast.success("Event deleted.");
       fetchEvents();
-    } catch (err: any) {
-      toast.error("Failed to delete event: " + err.message);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Failed to delete event: " + errorMessage);
     }
   };
 
   return (
-    <div className="w-full h-full font-sans">
+    <div className="w-full min-h-full font-sans">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-heading font-black">Events Management</h1>
           <p className="text-muted-foreground">Create, edit, and organize dojo events.</p>
         </div>
         <button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => { resetForm(); setIsModalOpen(true); }}
           className="bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-bold hover:bg-primary/90 flex items-center gap-2 shadow-sm transition-all"
         >
           <Plus size={20} />
@@ -128,7 +175,7 @@ export default function EventsManager() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 justify-items-center auto-rows-fr">
         {loading ? (
           <div className="col-span-full flex justify-center py-20">
              <Loader2 className="animate-spin text-primary" size={40} />
@@ -139,33 +186,48 @@ export default function EventsManager() {
           </div>
         ) : (
           events.map((evt) => (
-            <div key={evt.id} className="bg-card border rounded-2xl p-6 flex flex-col sm:flex-row gap-6 shadow-sm">
-              <div className="w-full sm:w-40 h-40 bg-secondary/20 rounded-xl overflow-hidden flex-shrink-0">
+            <div key={evt.id} className="bg-card border rounded-3xl p-6 flex flex-col gap-6 shadow-sm overflow-hidden w-full max-w-md h-full transition-all hover:shadow-md border-border/60">
+              <div className="w-full h-48 bg-secondary/20 rounded-2xl overflow-hidden flex-shrink-0 border border-border/40">
                 {evt.imageUrl ? (
                   <img src={evt.imageUrl} alt={evt.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground"><ImageIcon size={32}/></div>
                 )}
               </div>
-              <div className="flex-grow flex flex-col">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-heading font-bold text-xl line-clamp-1">{evt.title}</h3>
-                  <span className="text-xs font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-1 rounded">
+              <div className="flex-grow flex flex-col min-w-0">
+                <div className="flex justify-between items-start gap-2 mb-3">
+                  <h3 className="font-heading font-black text-xl line-clamp-1 break-words leading-tight">{evt.title}</h3>
+                  <span className="text-[10px] font-black uppercase tracking-widest bg-primary/10 text-primary px-2.5 py-1.5 rounded-lg border border-primary/20 flex-shrink-0">
                     {evt.eventType}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">{evt.description}</p>
+                <p className="text-sm text-muted-foreground mb-6 line-clamp-4 break-words leading-relaxed">{evt.description}</p>
                 
-                <div className="text-xs font-medium text-foreground/70 bg-secondary/30 rounded-lg p-3 grid grid-cols-2 gap-2 mb-4">
-                  <div className="truncate">📅 {evt.date}</div>
-                  <div className="truncate">⏰ {evt.time}</div>
-                  <div className="col-span-2 truncate">📍 {evt.location}</div>
+                <div className="text-[11px] font-bold text-foreground/80 bg-secondary/30 rounded-xl p-3 flex flex-col gap-2 mb-4 border border-border/50">
+                  <div className="flex justify-between items-center gap-4">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span className="text-primary">📅</span> {evt.date}
+                    </div>
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span className="text-primary">⏰</span> {evt.time}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 break-words pt-1 border-t border-border/20">
+                    <span className="text-primary">📍</span> {evt.location}
+                  </div>
                 </div>
 
-                <div className="flex justify-end gap-2 mt-auto">
+                <div className="flex justify-end gap-2 mt-auto pt-2 border-t border-border/50">
+                   <button 
+                      onClick={() => handleEdit(evt)}
+                      className="text-primary bg-primary/10 hover:bg-primary/20 p-2 rounded-xl transition-all shadow-sm active:scale-95"
+                      title="Edit Event"
+                   >
+                     <Edit size={18} />
+                   </button>
                    <button 
                       onClick={() => handleDelete(evt.id)}
-                      className="text-destructive bg-destructive/10 hover:bg-destructive/20 p-2 rounded-lg transition-colors"
+                      className="text-destructive bg-destructive/10 hover:bg-destructive/20 p-2 rounded-xl transition-all shadow-sm active:scale-95"
                       title="Delete Event"
                    >
                      <Trash2 size={18} />
@@ -177,16 +239,16 @@ export default function EventsManager() {
         )}
       </div>
 
-      {/* CREATE MODAL */}
+      {/* CREATE/EDIT MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-card w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div className="flex justify-between items-center p-6 border-b bg-secondary/10">
-              <h2 className="text-2xl font-heading font-bold">Create New Event</h2>
+              <h2 className="text-2xl font-heading font-bold">{editingId ? 'Edit Event' : 'Create New Event'}</h2>
               <button onClick={resetForm} className="text-muted-foreground hover:text-foreground bg-secondary/50 p-2 rounded-full"><X size={20}/></button>
             </div>
             
-            <form onSubmit={handleCreate} className="p-6 overflow-y-auto flex flex-col gap-5">
+            <form onSubmit={handleSave} className="p-6 overflow-y-auto flex flex-col gap-5">
                <div>
                   <label className="block text-sm font-bold mb-1">Event Title</label>
                   <input required type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full border rounded-xl px-4 py-2 bg-input/50 focus:ring-2 focus:ring-primary/50 outline-none" />
@@ -224,14 +286,16 @@ export default function EventsManager() {
                </div>
 
                <div>
-                  <label className="block text-sm font-bold mb-1">Cover Image</label>
-                  <input required type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="w-full border border-dashed rounded-xl px-4 py-3 bg-secondary/20 cursor-pointer" />
+                  <label className="block text-sm font-bold mb-1">
+                    Cover Image {editingId && <span className="text-muted-foreground font-normal">(Leave empty to keep current image)</span>}
+                  </label>
+                  <input required={!editingId} type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="w-full border border-dashed rounded-xl px-4 py-3 bg-secondary/20 cursor-pointer" />
                </div>
 
                <div className="flex justify-end gap-3 mt-4">
                   <button type="button" onClick={resetForm} className="px-6 py-2 rounded-xl font-bold bg-secondary hover:bg-secondary/80">Cancel</button>
                   <button type="submit" disabled={saving} className="px-6 py-2 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
-                    {saving ? "Creating..." : "Save Event"}
+                    {saving ? "Saving..." : (editingId ? "Update Event" : "Save Event")}
                   </button>
                </div>
             </form>

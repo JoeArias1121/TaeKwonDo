@@ -24,10 +24,15 @@ export default function Contact() {
             </div>
             <div>
               <h2 className="text-xl font-heading font-bold mb-1">Dojo Location</h2>
-              <p className="text-muted-foreground text-lg">
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=238+Fort+Washington+Ave.+Bsmt.+New+York+NY+10032"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline font-medium hover:text-primary/80 transition-colors"
+              >
                 238 Fort Washington Ave. Bsmt.<br/>
                 New York, NY 10032
-              </p>
+              </a>
             </div>
           </div>
 

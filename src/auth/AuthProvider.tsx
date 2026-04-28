@@ -1,30 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { User, onAuthStateChanged, signOut as firebaseSignOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
-
-export interface AppUser {
-  uid: string;
-  email: string | null;
-  role: "superadmin" | "admin" | "user";
-  isApproved: boolean;
-}
-
-interface AuthContextType {
-  currentUser: User | null;
-  appUser: AppUser | null;
-  loading: boolean;
-  logout: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType>({
-  currentUser: null,
-  appUser: null,
-  loading: true,
-  logout: async () => {},
-});
-
-export const useAuth = () => useContext(AuthContext);
+import { AuthContext } from "./authContext";
+import type { AppUser } from "./types";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);

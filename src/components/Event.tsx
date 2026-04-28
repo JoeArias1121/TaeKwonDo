@@ -2,7 +2,7 @@ import { Calendar, MapPin, Clock } from "lucide-react";
 
 export type EventType = 'Competition' | 'Fundraising' | 'Ceremony';
 
-export default function Event({ title, description, imageUrl, eventType }: { title: string; description: string; imageUrl: string; eventType: EventType }) {
+export default function Event({ title, description, imageUrl, eventType, date, time, location }: { title: string; description: string; imageUrl: string; eventType: EventType; date: string; time: string; location: string }) {
   return (
     <div className="group bg-card border flex flex-col w-full rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-primary/5 hover:border-primary/50 transition-all duration-300">
       <div className="relative h-48 w-full overflow-hidden">
@@ -28,15 +28,23 @@ export default function Event({ title, description, imageUrl, eventType }: { tit
         <div className="flex flex-col gap-2 pt-4 border-t border-border">
           <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
             <Calendar size={16} className="text-primary"/>
-            <span>October 15, 2023</span>
+            <span>{date}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
             <Clock size={16} className="text-primary"/>
-            <span>10:00 AM</span>
+            <span>{time}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
-            <MapPin size={16} className="text-primary"/>
-            <span>Central Park, NY</span>
+            <MapPin size={16} className="text-primary flex-shrink-0"/>
+            <a 
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline hover:text-primary/80 transition-colors line-clamp-1"
+              title={`View ${location} on Google Maps`}
+            >
+              {location}
+            </a>
           </div>
         </div>
       </div>

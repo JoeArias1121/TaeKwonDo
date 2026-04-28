@@ -3,7 +3,7 @@ import { collection, getDocs, doc, updateDoc, query, where, deleteDoc } from "fi
 import { db } from "@/lib/firebase";
 import { toast } from "sonner";
 import { Check, X, ShieldAlert, Loader2 } from "lucide-react";
-import { AppUser } from "@/auth/AuthContext";
+import type { AppUser } from "@/auth/types";
 
 export default function Approvals() {
   const [pendingUsers, setPendingUsers] = useState<AppUser[]>([]);
@@ -16,8 +16,9 @@ export default function Approvals() {
       const snapshot = await getDocs(q);
       const data = snapshot.docs.map((d) => ({ ...d.data() })) as AppUser[];
       setPendingUsers(data);
-    } catch (err: any) {
-      toast.error("Failed to load pending users: " + err.message);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Failed to load pending users: " + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -32,8 +33,9 @@ export default function Approvals() {
       await updateDoc(doc(db, "users", uid), { isApproved: true });
       toast.success(`${email} has been approved and granted access.`);
       fetchPending();
-    } catch (err: any) {
-      toast.error("Error approving user: " + err.message);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Error approving user: " + errorMessage);
     }
   };
 
@@ -44,8 +46,9 @@ export default function Approvals() {
       await deleteDoc(doc(db, "users", uid));
       toast.success("Request rejected.");
       fetchPending();
-    } catch (err: any) {
-      toast.error("Error rejecting user: " + err.message);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Error rejecting user: " + errorMessage);
     }
   };
 

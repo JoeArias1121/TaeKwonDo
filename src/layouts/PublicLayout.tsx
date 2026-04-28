@@ -15,7 +15,6 @@ export default function PublicLayout() {
       </main>
       <footer className="w-full bg-card border-t py-8 mt-auto">
         <div className="container mx-auto px-6 text-center text-muted-foreground text-sm">
-          <p>© {new Date().getFullYear()} NATF-ITF Taekwon-Do. All rights reserved.</p>
         </div>
       </footer>
     </div>

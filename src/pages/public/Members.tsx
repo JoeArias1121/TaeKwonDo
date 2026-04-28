@@ -1,13 +1,15 @@
-import avatar from '@/assets/avatar.jpg'
-import Member from '@/components/Member'
+import Member from '@/components/Member';
+import staticData from "@/data/content.json";
+
+interface DojoMember {
+  id: string;
+  name: string;
+  rank: string;
+  imageUrl: string;
+}
 
 export default function Members() {
-  const members = []
-  for (let i = 0; i < 10; i++) {
-    members.push(
-      <Member key={i} name={`Member Name ${i + 1}`} avatarUrl={avatar} />
-    )
-  }
+  const members = (staticData.members || []) as DojoMember[];
 
   return (
     <div className="w-full pb-20">
@@ -21,9 +23,22 @@ export default function Members() {
       </div>
 
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-items-center">
-          {members}
-        </div>
+        {members.length === 0 ? (
+           <div className="text-center text-muted-foreground p-12 bg-secondary/10 rounded-xl border border-dashed">
+             No members have been listed yet.
+           </div>
+        ) : (
+          <div className="flex flex-wrap justify-center gap-8">
+            {members.map(member => (
+               <Member 
+                 key={member.id} 
+                 name={member.name} 
+                 avatarUrl={member.imageUrl} 
+                 rank={member.rank}
+               />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
