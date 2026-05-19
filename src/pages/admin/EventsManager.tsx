@@ -5,6 +5,7 @@ import { db, storage } from "@/lib/firebase";
 import { toast } from "sonner";
 import { Trash2, Plus, X, Image as ImageIcon, Loader2, Edit } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export type EventType = "Competition" | "Fundraising" | "Ceremony";
 
@@ -22,6 +23,7 @@ interface DojoEvent {
 }
 
 export default function EventsManager() {
+  const { content } = useLanguage();
   const [events, setEvents] = useState<DojoEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,12 +85,12 @@ export default function EventsManager() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingId && !imageFile) {
-      toast.error("An event image is required for new events!");
+      toast.error(content.admin.events.toast_image_req);
       return;
     }
     
     setSaving(true);
-    const loadingToast = toast.loading(editingId ? "Updating event..." : "Uploading image and saving event...");
+    const loadingToast = toast.loading(editingId ? content.admin.events.toast_updating : content.admin.events.toast_saving);
 
     try {
       let finalImageUrl: string | undefined;
@@ -121,7 +123,7 @@ export default function EventsManager() {
         if (finalImageUrl) updateData.imageUrl = finalImageUrl;
 
         await updateDoc(doc(db, "events", editingId), updateData);
-        toast.success("Event updated successfully!", { id: loadingToast });
+        toast.success(content.admin.events.toast_success_update, { id: loadingToast });
       } else {
         await addDoc(collection(db, "events"), {
           title,
@@ -133,29 +135,29 @@ export default function EventsManager() {
           imageUrl: finalImageUrl,
           createdAt: new Date().toISOString()
         });
-        toast.success("Event created successfully!", { id: loadingToast });
+        toast.success(content.admin.events.toast_success_create, { id: loadingToast });
       }
 
       resetForm();
       fetchEvents();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
-      toast.error("Error saving event: " + errorMessage, { id: loadingToast });
+      toast.error(content.admin.events.toast_error_save + errorMessage, { id: loadingToast });
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this event? This action cannot be undone.")) return;
+    if (!window.confirm(content.admin.events.confirm_delete)) return;
 
     try {
       await deleteDoc(doc(db, "events", id));
-      toast.success("Event deleted.");
+      toast.success(content.admin.events.toast_deleted);
       fetchEvents();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
-      toast.error("Failed to delete event: " + errorMessage);
+      toast.error(content.admin.events.toast_error_delete + errorMessage);
     }
   };
 
@@ -163,15 +165,15 @@ export default function EventsManager() {
     <div className="w-full min-h-full font-sans">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-heading font-black">Events Management</h1>
-          <p className="text-muted-foreground">Create, edit, and organize dojo events.</p>
+          <h1 className="text-3xl font-heading font-black">{content.admin.events.title}</h1>
+          <p className="text-muted-foreground">{content.admin.events.subtitle}</p>
         </div>
         <button 
           onClick={() => { resetForm(); setIsModalOpen(true); }}
           className="bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-bold hover:bg-primary/90 flex items-center gap-2 shadow-sm transition-all"
         >
           <Plus size={20} />
-          New Event
+          {content.admin.events.new_event}
         </button>
       </div>
 
@@ -182,7 +184,7 @@ export default function EventsManager() {
           </div>
         ) : events.length === 0 ? (
           <div className="col-span-full bg-card border border-dashed rounded-3xl p-12 text-center text-muted-foreground">
-             No events found in the database. Click "New Event" to create one.
+             {content.admin.events.no_events}
           </div>
         ) : (
           events.map((evt) => (
@@ -244,24 +246,24 @@ export default function EventsManager() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-card w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div className="flex justify-between items-center p-6 border-b bg-secondary/10">
-              <h2 className="text-2xl font-heading font-bold">{editingId ? 'Edit Event' : 'Create New Event'}</h2>
+              <h2 className="text-2xl font-heading font-bold">{editingId ? content.admin.events.edit_event : content.admin.events.create_event}</h2>
               <button onClick={resetForm} className="text-muted-foreground hover:text-foreground bg-secondary/50 p-2 rounded-full"><X size={20}/></button>
             </div>
             
             <form onSubmit={handleSave} className="p-6 overflow-y-auto flex flex-col gap-5">
                <div>
-                  <label className="block text-sm font-bold mb-1">Event Title</label>
+                  <label className="block text-sm font-bold mb-1">{content.admin.events.form_title}</label>
                   <input required type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full border rounded-xl px-4 py-2 bg-input/50 focus:ring-2 focus:ring-primary/50 outline-none" />
                </div>
 
                <div>
-                  <label className="block text-sm font-bold mb-1">Description</label>
+                  <label className="block text-sm font-bold mb-1">{content.admin.events.form_description}</label>
                   <textarea required value={description} onChange={e => setDescription(e.target.value)} rows={3} className="w-full border rounded-xl px-4 py-2 bg-input/50 focus:ring-2 focus:ring-primary/50 outline-none" />
                </div>
 
                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-bold mb-1">Event Type</label>
+                    <label className="block text-sm font-bold mb-1">{content.admin.events.form_type}</label>
                     <select value={eventType} onChange={e => setEventType(e.target.value as EventType)} className="w-full border rounded-xl px-4 py-2.5 bg-input/50 focus:ring-2 focus:ring-primary/50 outline-none">
                       <option value="Competition">Competition</option>
                       <option value="Fundraising">Fundraising</option>
@@ -269,33 +271,33 @@ export default function EventsManager() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold mb-1">Location</label>
+                    <label className="block text-sm font-bold mb-1">{content.admin.events.form_location}</label>
                     <input required type="text" value={location} onChange={e => setLocation(e.target.value)} placeholder="e.g. Central Park Dojo" className="w-full border rounded-xl px-4 py-2 bg-input/50 focus:ring-2 focus:ring-primary/50 outline-none" />
                   </div>
                </div>
 
                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-bold mb-1">Date</label>
+                    <label className="block text-sm font-bold mb-1">{content.admin.events.form_date}</label>
                     <input required type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border rounded-xl px-4 py-2 bg-input/50 focus:ring-2 focus:ring-primary/50 outline-none" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold mb-1">Time</label>
+                    <label className="block text-sm font-bold mb-1">{content.admin.events.form_time}</label>
                     <input required type="time" value={time} onChange={e => setTime(e.target.value)} className="w-full border rounded-xl px-4 py-2 bg-input/50 focus:ring-2 focus:ring-primary/50 outline-none" />
                   </div>
                </div>
 
                <div>
                   <label className="block text-sm font-bold mb-1">
-                    Cover Image {editingId && <span className="text-muted-foreground font-normal">(Leave empty to keep current image)</span>}
+                    {content.admin.events.form_cover} {editingId && <span className="text-muted-foreground font-normal">{content.admin.events.form_cover_hint}</span>}
                   </label>
                   <input required={!editingId} type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="w-full border border-dashed rounded-xl px-4 py-3 bg-secondary/20 cursor-pointer" />
                </div>
 
                <div className="flex justify-end gap-3 mt-4">
-                  <button type="button" onClick={resetForm} className="px-6 py-2 rounded-xl font-bold bg-secondary hover:bg-secondary/80">Cancel</button>
+                  <button type="button" onClick={resetForm} className="px-6 py-2 rounded-xl font-bold bg-secondary hover:bg-secondary/80">{content.admin.events.btn_cancel}</button>
                   <button type="submit" disabled={saving} className="px-6 py-2 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
-                    {saving ? "Saving..." : (editingId ? "Update Event" : "Save Event")}
+                    {saving ? content.admin.events.btn_saving : (editingId ? content.admin.events.btn_update : content.admin.events.btn_save)}
                   </button>
                </div>
             </form>

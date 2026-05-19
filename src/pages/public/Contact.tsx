@@ -1,13 +1,15 @@
 import { MapPin, Phone, Mail } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Contact() {
+  const { content } = useLanguage();
   return (
     <div className="w-full h-full flex flex-col items-center justify-center py-20 px-6">
       
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">Get In Touch</h1>
+        <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">{content.contact.get_in_touch}</h1>
         <p className="text-lg text-muted-foreground max-w-lg mx-auto">
-          We welcome new students of all ages and experience levels. Visit us, or reach out to start your Taekwon-Do journey today.
+          {content.contact.subtitle}
         </p>
       </div>
 
@@ -23,7 +25,7 @@ export default function Contact() {
               <MapPin className="text-primary" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-heading font-bold mb-1">Dojo Location</h2>
+              <h2 className="text-xl font-heading font-bold mb-1">{content.contact.location}</h2>
               <a 
                 href="https://www.google.com/maps/search/?api=1&query=238+Fort+Washington+Ave.+Bsmt.+New+York+NY+10032"
                 target="_blank"
@@ -41,7 +43,7 @@ export default function Contact() {
               <Phone className="text-primary" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-heading font-bold mb-1">Phone Number</h2>
+              <h2 className="text-xl font-heading font-bold mb-1">{content.contact.phone}</h2>
               <a href="tel:+16467175634" className="text-muted-foreground text-lg hover:text-primary transition-colors">
                 1-646-717-5634
               </a>
@@ -53,7 +55,7 @@ export default function Contact() {
               <Mail className="text-primary" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-heading font-bold mb-1">Email Address</h2>
+              <h2 className="text-xl font-heading font-bold mb-1">{content.contact.email}</h2>
               <a href="mailto:ramon16itf@yahoo.com" className="text-muted-foreground text-lg hover:text-primary transition-colors">
                 ramon16itf@yahoo.com
               </a>

@@ -2,21 +2,23 @@ import { useState } from "react";
 import { Outlet, NavLink, Link } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
 import { LayoutDashboard, CalendarDays, Users, FileText, ShieldCheck, LogOut, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import LanguageSelector from "@/components/LanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function AdminLayout() {
   const { appUser, logout } = useAuth();
+  const { content } = useLanguage();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const navItems = [
-    { name: "Dashboard", path: "/admin", icon: <LayoutDashboard size={20} />, exact: true },
-    { name: "Events", path: "/admin/events", icon: <CalendarDays size={20} /> },
-    { name: "Members", path: "/admin/members", icon: <Users size={20} /> },
-    { name: "About Me", path: "/admin/about", icon: <FileText size={20} /> },
+    { name: content.admin.sidebar.dashboard, path: "/admin", icon: <LayoutDashboard size={20} />, exact: true },
+    { name: content.admin.sidebar.events, path: "/admin/events", icon: <CalendarDays size={20} /> },
+    { name: content.admin.sidebar.members, path: "/admin/members", icon: <Users size={20} /> },
+    { name: content.admin.sidebar.about_me, path: "/admin/about", icon: <FileText size={20} /> },
   ];
 
-  // Superadmin gets the extra approval tab
   if (appUser?.role === "superadmin") {
-    navItems.push({ name: "Approvals", path: "/admin/approvals", icon: <ShieldCheck size={20} /> });
+    navItems.push({ name: content.admin.sidebar.approvals, path: "/admin/approvals", icon: <ShieldCheck size={20} /> });
   }
 
   return (
@@ -40,6 +42,11 @@ export default function AdminLayout() {
         </div>
         
         <div className={`flex-grow py-6 ${isCollapsed ? "px-2" : "px-4"} flex flex-col gap-2 overflow-y-auto`}>
+          {/* Language Selector */}
+          <div className={`mb-2 ${isCollapsed ? "flex justify-center" : "px-4 py-2"}`}>
+            <LanguageSelector compact={isCollapsed} align="left" />
+          </div>
+
           {navItems.map((item) => (
             <NavLink
               key={item.name}
@@ -58,17 +65,16 @@ export default function AdminLayout() {
               {!isCollapsed && <span className="truncate">{item.name}</span>}
             </NavLink>
           ))}
-
           <div className="mt-auto">
             <Link 
               to="/" 
               target="_blank" 
               rel="noopener noreferrer" 
               className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3 px-4"} py-3 rounded-xl font-semibold text-primary hover:bg-primary/10 transition-all`}
-              title={isCollapsed ? "Home Page" : ""}
+              title={isCollapsed ? content.admin.sidebar.home_page : ""}
             >
               <div className="flex-shrink-0"><ExternalLink size={20} /></div>
-              {!isCollapsed && <span className="truncate">Home Page</span>}
+              {!isCollapsed && <span className="truncate">{content.admin.sidebar.home_page}</span>}
             </Link>
           </div>
         </div>
@@ -87,10 +93,10 @@ export default function AdminLayout() {
           <button 
             onClick={logout}
             className={`flex items-center ${isCollapsed ? "justify-center" : "gap-2 px-4"} w-full py-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl transition-all font-semibold`}
-            title={isCollapsed ? "Sign Out" : ""}
+            title={isCollapsed ? content.admin.sidebar.sign_out : ""}
           >
             <div className="flex-shrink-0"><LogOut size={20} /></div>
-            {!isCollapsed && <span>Sign Out</span>}
+            {!isCollapsed && <span>{content.admin.sidebar.sign_out}</span>}
           </button>
         </div>
       </aside>

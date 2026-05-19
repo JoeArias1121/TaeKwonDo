@@ -5,8 +5,11 @@ import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import type { AppUser } from "@/auth/types";
 import { Eye, EyeOff } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSelector from "@/components/LanguageSelector";
 
 export default function Signup() {
+  const { content } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,7 +24,7 @@ export default function Signup() {
     setError("");
     
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError(content.auth.passwords_mismatch);
       return;
     }
     
@@ -53,18 +56,21 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-6">
+    <div className="min-h-screen flex items-center justify-center bg-background p-6 relative">
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSelector />
+      </div>
       <div className="w-full max-w-md bg-card border rounded-3xl p-8 shadow-lg">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-heading font-bold mb-2">Apply for Access</h1>
-          <p className="text-muted-foreground">Admin access must be manually approved.</p>
+          <h1 className="text-3xl font-heading font-bold mb-2">{content.auth.signup_title}</h1>
+          <p className="text-muted-foreground">{content.auth.signup_subtitle}</p>
         </div>
 
         {error && <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg mb-6 text-center">{error}</div>}
 
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Email Address</label>
+            <label className="block text-sm font-medium mb-1">{content.auth.email}</label>
             <input 
               type="email" 
               value={email}
@@ -74,7 +80,7 @@ export default function Signup() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="block text-sm font-medium mb-1">{content.auth.password}</label>
             <div className="relative">
               <input 
                 type={showPassword ? "text" : "password"}
@@ -94,7 +100,7 @@ export default function Signup() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Confirm Password</label>
+            <label className="block text-sm font-medium mb-1">{content.auth.confirm_password}</label>
             <div className="relative">
               <input 
                 type={showConfirmPassword ? "text" : "password"}
@@ -118,17 +124,17 @@ export default function Signup() {
             disabled={loading}
             className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg shadow-md hover:bg-primary/90 transition-all mt-4 disabled:opacity-50"
           >
-            {loading ? "Signing up..." : "Sign Up"}
+            {loading ? content.auth.signing_up : content.auth.signup}
           </button>
         </form>
 
         <div className="text-center mt-6 text-sm text-muted-foreground">
-          Already have an account? <Link to="/login" className="text-primary font-bold hover:underline">Log In</Link>
+          {content.auth.has_account} <Link to="/login" className="text-primary font-bold hover:underline">{content.auth.log_in}</Link>
         </div>
 
         <div className="text-center mt-4 text-sm">
           <Link to="/" className="text-primary font-bold hover:underline transition-colors">
-            &larr; Back to site
+            &larr; {content.auth.back_to_site}
           </Link>
         </div>
       </div>

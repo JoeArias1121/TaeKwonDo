@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import LanguageSelector from "./LanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function NavBar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { content } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,11 +20,11 @@ export default function NavBar() {
   }, []);
 
   const links = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/aboutme" },
-    { name: "Members", path: "/members" },
-    { name: "Events", path: "/events" },
-    { name: "Contact", path: "/contact" },
+    { name: content.nav.home, path: "/" },
+    { name: content.nav.about, path: "/aboutme" },
+    { name: content.nav.members, path: "/members" },
+    { name: content.nav.events, path: "/events" },
+    { name: content.nav.contact, path: "/contact" },
   ];
 
   return (
@@ -32,17 +35,18 @@ export default function NavBar() {
           : "bg-background py-4"
       }`}
     >
-      <div className="container mx-auto px-6 lg:px-12 flex justify-between md:justify-center items-center">
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden p-2 text-foreground"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+      <div className="flex items-center w-full px-4 sm:px-6">
+        <div className="flex-1">
+          <button
+            className="md:hidden p-2 -ml-2 text-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8 font-heading">
+        {/* Center: Desktop Nav */}
+        <div className="hidden md:flex flex-[2] justify-center items-center gap-8 font-heading">
           {links.map((link) => (
             <Link
               key={link.path}
@@ -63,13 +67,13 @@ export default function NavBar() {
             to="/contact"
             className="ml-4 px-6 py-2 bg-primary text-primary-foreground text-sm font-bold rounded-full shadow-md hover:bg-primary/90 transition-all"
           >
-            Join Dojo
+            {content.home.join_us}
           </Link>
         </div>
 
-        {/* Small Brand on Mobile only */}
-        <div className="md:hidden font-heading font-bold text-lg text-primary tracking-tight">
-           TKD
+        {/* Right: Language Selector (Takes the place of TKD logo on mobile, sits far right on desktop) */}
+        <div className="flex-1 flex justify-end">
+          <LanguageSelector />
         </div>
       </div>
 
@@ -94,6 +98,14 @@ export default function NavBar() {
               {link.name}
             </Link>
           ))}
+          {/* Join Dojo Button inside mobile menu */}
+          <Link
+            to="/contact"
+            onClick={() => setMobileMenuOpen(false)}
+            className="mt-2 text-center py-3 bg-primary text-primary-foreground text-lg font-bold rounded-xl shadow-md hover:bg-primary/90 transition-all"
+          >
+            {content.home.join_us}
+          </Link>
         </div>
       </div>
     </nav>

@@ -1,0 +1,182 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "events": "Events",
+    "members": "Members",
+    "contact": "Contact",
+    "login": "Login / Admin"
+  },
+  "header": {
+    "title": "NATIONAL AMERICAN TAEKWON-DO FEDERATION (NATF-ITF)"
+  },
+  "home": {
+    "welcome": "Welcome to TaeKwonDo",
+    "hero_subtitle": "Discipline, Respect, and Self-Defense",
+    "join_us": "Join Us Today",
+    "learn_more": "Learn More",
+    "badge": "NATIONAL AMERICAN TAEKWON-DO FEDERATION",
+    "hero_title_1": "Master Your Mind, Body, ",
+    "hero_title_2": "and Spirit.",
+    "hero_description": "Join a community dedicated to the authentic art of ITF Taekwon-Do. Build discipline, strength, and character in a world-class environment.",
+    "start_journey": "Start Your Journey",
+    "about_me": "About Me",
+    "mission_title": "Our Mission",
+    "mission_description": "To preserve and teach the original, authentic techniques of Taekwon-Do as created by General Choi Hong Hi. We strive to develop our students physically, mentally, and morally, creating leaders who contribute positively to society.",
+    "news_title": "Latest News",
+    "news_description": "Stay updated with our latest events, belt testings, and tournament results. Our community is constantly growing and celebrating new milestones.",
+    "view_events": "View Upcoming Events"
+  },
+  "events": {
+    "title": "Upcoming Events",
+    "subtitle": "Stay connected with our community through upcoming tournaments, belt testings, and seminars.",
+    "past_events": "Past Events",
+    "no_events": "No upcoming events at this time."
+  },
+  "members": {
+    "title": "Our Members",
+    "subtitle": "Meet the dedicated students and practitioners who make our Taekwon-Do community strong, supportive, and passionate.",
+    "no_members": "No members to display."
+  },
+  "about": {
+    "title": "About Us"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "get_in_touch": "Get In Touch",
+    "subtitle": "We welcome new students of all ages and experience levels. Visit us, or reach out to start your Taekwon-Do journey today.",
+    "location": "Dojo Location",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "name": "Name",
+    "message": "Message",
+    "send": "Send Message"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  },
+  "auth": {
+    "login_title": "Welcome Back",
+    "login_subtitle": "Secure Dashboard Login",
+    "signup_title": "Apply for Access",
+    "signup_subtitle": "Admin access must be manually approved.",
+    "email": "Email Address",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "signing_in": "Authenticating...",
+    "signing_up": "Signing up...",
+    "invalid_login": "Invalid login credentials.",
+    "passwords_mismatch": "Passwords do not match.",
+    "no_account": "Need access?",
+    "apply_here": "Apply Here",
+    "has_account": "Already have an account?",
+    "log_in": "Log In",
+    "pending_title": "Pending Approval",
+    "pending_subtitle": "Your account has been successfully created. However, you must wait for a Super Admin to manually approve your access before you can enter the dashboard.",
+    "back_to_site": "Back to site",
+    "return_to_site": "Return to Site",
+    "return_to_login": "Return to Login"
+  },
+  "admin": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "events": "Events",
+      "members": "Members",
+      "about_me": "About Me",
+      "approvals": "Approvals",
+      "home_page": "Home Page",
+      "sign_out": "Sign Out"
+    },
+    "dashboard": {
+      "welcome": "Welcome Back!",
+      "subtitle": "This is your central control panel. Use the sidebar to manage your events, members, and public information.",
+      "superadmin_title": "Super Admin Access Active",
+      "superadmin_subtitle": "You have access to pending user approvals. Head over to the Approvals tab to manage incoming signup requests."
+    },
+    "events": {
+      "title": "Events Management",
+      "subtitle": "Create, edit, and organize dojo events.",
+      "new_event": "New Event",
+      "no_events": "No events found in the database. Click \"New Event\" to create one.",
+      "edit_event": "Edit Event",
+      "create_event": "Create New Event",
+      "form_title": "Event Title",
+      "form_description": "Description",
+      "form_type": "Event Type",
+      "form_location": "Location",
+      "form_date": "Date",
+      "form_time": "Time",
+      "form_cover": "Cover Image",
+      "form_cover_hint": "(Leave empty to keep current image)",
+      "btn_cancel": "Cancel",
+      "btn_saving": "Saving...",
+      "btn_update": "Update Event",
+      "btn_save": "Save Event",
+      "toast_image_req": "An event image is required for new events!",
+      "toast_saving": "Uploading image and saving event...",
+      "toast_updating": "Updating event...",
+      "toast_success_update": "Event updated successfully!",
+      "toast_success_create": "Event created successfully!",
+      "toast_error_save": "Error saving event: ",
+      "confirm_delete": "Are you sure you want to delete this event? This action cannot be undone.",
+      "toast_deleted": "Event deleted.",
+      "toast_error_delete": "Failed to delete event: "
+    },
+    "members": {
+      "title": "Members Directory",
+      "subtitle": "Manage dojo students and instructors.",
+      "add_member": "Add Member",
+      "no_members": "No members found. Click \"Add Member\" to add a student.",
+      "joined": "Joined: ",
+      "edit_member": "Edit Member",
+      "create_member": "Add New Member",
+      "form_name": "Full Name",
+      "form_rank": "Rank / Belt",
+      "form_date": "Join Date",
+      "form_headshot": "Member Headshot",
+      "form_headshot_hint": "(Leave empty to keep current)",
+      "btn_cancel": "Cancel",
+      "btn_saving": "Saving...",
+      "btn_update": "Update Member",
+      "btn_save": "Add Member",
+      "toast_image_req": "A headshot/avatar is required for new members!",
+      "toast_saving": "Uploading image and saving member...",
+      "toast_updating": "Updating member...",
+      "toast_success_update": "Member updated successfully!",
+      "toast_success_create": "Member added successfully!",
+      "toast_error_save": "Error saving member: ",
+      "confirm_delete": "Are you sure you want to remove ",
+      "toast_deleted": "Member removed.",
+      "toast_error_delete": "Failed to delete member: "
+    },
+    "about": {
+      "title": "Edit 'About Me'",
+      "subtitle": "Manage the content displayed on your public profile page.",
+      "profile_avatar": "Profile Avatar",
+      "no_image": "No Image",
+      "display_title": "Display Title",
+      "display_role": "Subtitle / Role",
+      "bio": "Biography / Introduction Text",
+      "btn_saving": "Saving...",
+      "btn_save": "Save Changes",
+      "toast_saving": "Saving About page data...",
+      "toast_success": "About page updated successfully!",
+      "toast_error": "Error saving data: "
+    },
+    "approvals": {
+      "title": "Access Approvals",
+      "subtitle": "Approve or deny dashboard access for new signups.",
+      "no_requests": "No pending requests",
+      "no_requests_sub": "You're all caught up! There are no new signups waiting for approval.",
+      "req_role": "Requested Role: ",
+      "btn_approve": "Approve",
+      "toast_approved": " has been approved and granted access.",
+      "toast_error_approve": "Error approving user: ",
+      "confirm_reject": "Are you sure you want to reject this request? This will delete their database presence.",
+      "toast_rejected": "Request rejected.",
+      "toast_error_reject": "Error rejecting user: "
+    }
+  }
+}

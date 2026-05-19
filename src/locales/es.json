@@ -1,0 +1,182 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Nosotros",
+    "events": "Eventos",
+    "members": "Miembros",
+    "contact": "Contacto",
+    "login": "Iniciar Sesión / Admin"
+  },
+  "header": {
+    "title": "FEDERACIÓN NACIONAL AMERICANA DE TAEKWON-DO (NATF-ITF)"
+  },
+  "home": {
+    "welcome": "Bienvenidos a TaeKwonDo",
+    "hero_subtitle": "Disciplina, Respeto y Defensa Personal",
+    "join_us": "Únete Hoy",
+    "learn_more": "Saber Más",
+    "badge": "FEDERACIÓN NACIONAL AMERICANA DE TAEKWON-DO",
+    "hero_title_1": "Domina tu Mente, Cuerpo, ",
+    "hero_title_2": "y Espíritu.",
+    "hero_description": "Únete a una comunidad dedicada al auténtico arte del Taekwon-Do ITF. Desarrolla disciplina, fuerza y carácter en un ambiente de clase mundial.",
+    "start_journey": "Comienza tu Viaje",
+    "about_me": "Sobre Mí",
+    "mission_title": "Nuestra Misión",
+    "mission_description": "Preservar y enseñar las técnicas originales y auténticas del Taekwon-Do creadas por el General Choi Hong Hi. Nos esforzamos por desarrollar a nuestros estudiantes física, mental y moralmente, creando líderes que contribuyan positivamente a la sociedad.",
+    "news_title": "Últimas Noticias",
+    "news_description": "Mantente al día con nuestros últimos eventos, exámenes de cinturón y resultados de torneos. Nuestra comunidad crece y celebra nuevos logros constantemente.",
+    "view_events": "Ver Próximos Eventos"
+  },
+  "events": {
+    "title": "Próximos Eventos",
+    "subtitle": "Manténgase conectado con nuestra comunidad a través de torneos, exámenes de cinturón y seminarios.",
+    "past_events": "Eventos Pasados",
+    "no_events": "No hay eventos próximos en este momento."
+  },
+  "members": {
+    "title": "Nuestros Miembros",
+    "subtitle": "Conozca a los estudiantes y practicantes dedicados que hacen que nuestra comunidad de Taekwon-Do sea fuerte y apasionada.",
+    "no_members": "No hay miembros para mostrar."
+  },
+  "about": {
+    "title": "Sobre Nosotros"
+  },
+  "contact": {
+    "title": "Contáctenos",
+    "get_in_touch": "Póngase en Contacto",
+    "subtitle": "Damos la bienvenida a nuevos estudiantes de todas las edades y niveles de experiencia. Visítenos o contáctenos para comenzar su viaje hoy.",
+    "location": "Ubicación del Dojo",
+    "phone": "Número de Teléfono",
+    "email": "Dirección de Correo",
+    "name": "Nombre",
+    "message": "Mensaje",
+    "send": "Enviar Mensaje"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados."
+  },
+  "auth": {
+    "login_title": "Bienvenido de Nuevo",
+    "login_subtitle": "Inicio de Sesión Seguro",
+    "signup_title": "Solicitar Acceso",
+    "signup_subtitle": "El acceso de administrador debe aprobarse manualmente.",
+    "email": "Dirección de Correo",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar Contraseña",
+    "signin": "Iniciar Sesión",
+    "signup": "Registrarse",
+    "signing_in": "Autenticando...",
+    "signing_up": "Registrando...",
+    "invalid_login": "Credenciales inválidas.",
+    "passwords_mismatch": "Las contraseñas no coinciden.",
+    "no_account": "¿Necesita acceso?",
+    "apply_here": "Solicite Aquí",
+    "has_account": "¿Ya tiene una cuenta?",
+    "log_in": "Iniciar Sesión",
+    "pending_title": "Aprobación Pendiente",
+    "pending_subtitle": "Su cuenta ha sido creada exitosamente. Sin embargo, debe esperar a que un Super Administrador apruebe manualmente su acceso antes de poder entrar al panel.",
+    "back_to_site": "Volver al sitio",
+    "return_to_site": "Volver al Sitio",
+    "return_to_login": "Volver al Inicio de Sesión"
+  },
+  "admin": {
+    "sidebar": {
+      "dashboard": "Panel de Control",
+      "events": "Eventos",
+      "members": "Miembros",
+      "about_me": "Sobre Mí",
+      "approvals": "Aprobaciones",
+      "home_page": "Página Principal",
+      "sign_out": "Cerrar Sesión"
+    },
+    "dashboard": {
+      "welcome": "¡Bienvenido de nuevo!",
+      "subtitle": "Este es tu panel de control central. Usa la barra lateral para gestionar tus eventos, miembros e información pública.",
+      "superadmin_title": "Acceso de Super Administrador Activo",
+      "superadmin_subtitle": "Tienes acceso a las aprobaciones de usuarios pendientes. Dirígete a la pestaña de Aprobaciones para gestionar las nuevas solicitudes de registro."
+    },
+    "events": {
+      "title": "Gestión de Eventos",
+      "subtitle": "Crea, edita y organiza eventos del dojo.",
+      "new_event": "Nuevo Evento",
+      "no_events": "No se encontraron eventos en la base de datos. Haz clic en \"Nuevo Evento\" para crear uno.",
+      "edit_event": "Editar Evento",
+      "create_event": "Crear Nuevo Evento",
+      "form_title": "Título del Evento",
+      "form_description": "Descripción",
+      "form_type": "Tipo de Evento",
+      "form_location": "Ubicación",
+      "form_date": "Fecha",
+      "form_time": "Hora",
+      "form_cover": "Imagen de Portada",
+      "form_cover_hint": "(Déjalo vacío para mantener la imagen actual)",
+      "btn_cancel": "Cancelar",
+      "btn_saving": "Guardando...",
+      "btn_update": "Actualizar Evento",
+      "btn_save": "Guardar Evento",
+      "toast_image_req": "¡Se requiere una imagen para los nuevos eventos!",
+      "toast_saving": "Subiendo imagen y guardando evento...",
+      "toast_updating": "Actualizando evento...",
+      "toast_success_update": "¡Evento actualizado exitosamente!",
+      "toast_success_create": "¡Evento creado exitosamente!",
+      "toast_error_save": "Error al guardar el evento: ",
+      "confirm_delete": "¿Estás seguro de que deseas eliminar este evento? Esta acción no se puede deshacer.",
+      "toast_deleted": "Evento eliminado.",
+      "toast_error_delete": "Error al eliminar el evento: "
+    },
+    "members": {
+      "title": "Directorio de Miembros",
+      "subtitle": "Gestiona los estudiantes e instructores del dojo.",
+      "add_member": "Añadir Miembro",
+      "no_members": "No se encontraron miembros. Haz clic en \"Añadir Miembro\" para añadir un estudiante.",
+      "joined": "Se unió: ",
+      "edit_member": "Editar Miembro",
+      "create_member": "Añadir Nuevo Miembro",
+      "form_name": "Nombre Completo",
+      "form_rank": "Grado / Cinturón",
+      "form_date": "Fecha de Ingreso",
+      "form_headshot": "Foto del Miembro",
+      "form_headshot_hint": "(Déjalo vacío para mantener la actual)",
+      "btn_cancel": "Cancelar",
+      "btn_saving": "Guardando...",
+      "btn_update": "Actualizar Miembro",
+      "btn_save": "Añadir Miembro",
+      "toast_image_req": "¡Se requiere una foto de perfil para los nuevos miembros!",
+      "toast_saving": "Subiendo imagen y guardando miembro...",
+      "toast_updating": "Actualizando miembro...",
+      "toast_success_update": "¡Miembro actualizado exitosamente!",
+      "toast_success_create": "¡Miembro añadido exitosamente!",
+      "toast_error_save": "Error al guardar el miembro: ",
+      "confirm_delete": "¿Estás seguro de que deseas eliminar a ",
+      "toast_deleted": "Miembro eliminado.",
+      "toast_error_delete": "Error al eliminar el miembro: "
+    },
+    "about": {
+      "title": "Editar 'Sobre Mí'",
+      "subtitle": "Gestiona el contenido que se muestra en tu página de perfil público.",
+      "profile_avatar": "Avatar de Perfil",
+      "no_image": "Sin Imagen",
+      "display_title": "Título Principal",
+      "display_role": "Subtítulo / Rol",
+      "bio": "Biografía / Texto de Introducción",
+      "btn_saving": "Guardando...",
+      "btn_save": "Guardar Cambios",
+      "toast_saving": "Guardando datos de la página Sobre Mí...",
+      "toast_success": "¡Página Sobre Mí actualizada exitosamente!",
+      "toast_error": "Error al guardar los datos: "
+    },
+    "approvals": {
+      "title": "Aprobaciones de Acceso",
+      "subtitle": "Aprueba o deniega el acceso al panel para los nuevos registros.",
+      "no_requests": "No hay solicitudes pendientes",
+      "no_requests_sub": "¡Estás al día! No hay nuevos registros esperando aprobación.",
+      "req_role": "Rol Solicitado: ",
+      "btn_approve": "Aprobar",
+      "toast_approved": " ha sido aprobado y se le ha concedido acceso.",
+      "toast_error_approve": "Error al aprobar al usuario: ",
+      "confirm_reject": "¿Estás seguro de que deseas rechazar esta solicitud? Esto eliminará su presencia en la base de datos.",
+      "toast_rejected": "Solicitud rechazada.",
+      "toast_error_reject": "Error al rechazar al usuario: "
+    }
+  }
+}

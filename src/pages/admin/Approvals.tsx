@@ -4,8 +4,10 @@ import { db } from "@/lib/firebase";
 import { toast } from "sonner";
 import { Check, X, ShieldAlert, Loader2 } from "lucide-react";
 import type { AppUser } from "@/auth/types";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Approvals() {
+  const { content } = useLanguage();
   const [pendingUsers, setPendingUsers] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,32 +33,32 @@ export default function Approvals() {
   const handleApprove = async (uid: string, email: string | null) => {
     try {
       await updateDoc(doc(db, "users", uid), { isApproved: true });
-      toast.success(`${email} has been approved and granted access.`);
+      toast.success(`${email}${content.admin.approvals.toast_approved}`);
       fetchPending();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
-      toast.error("Error approving user: " + errorMessage);
+      toast.error(content.admin.approvals.toast_error_approve + errorMessage);
     }
   };
 
   const handleReject = async (uid: string) => {
-    if (!window.confirm("Are you sure you want to reject this request? This will delete their database presence.")) return;
+    if (!window.confirm(content.admin.approvals.confirm_reject)) return;
 
     try {
       await deleteDoc(doc(db, "users", uid));
-      toast.success("Request rejected.");
+      toast.success(content.admin.approvals.toast_rejected);
       fetchPending();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
-      toast.error("Error rejecting user: " + errorMessage);
+      toast.error(content.admin.approvals.toast_error_reject + errorMessage);
     }
   };
 
   return (
     <div className="w-full h-full font-sans max-w-5xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-heading font-black">Access Approvals</h1>
-        <p className="text-muted-foreground">Approve or deny dashboard access for new signups.</p>
+        <h1 className="text-3xl font-heading font-black">{content.admin.approvals.title}</h1>
+        <p className="text-muted-foreground">{content.admin.approvals.subtitle}</p>
       </div>
 
       <div className="bg-card border rounded-3xl p-6 shadow-sm">
@@ -65,8 +67,8 @@ export default function Approvals() {
         ) : pendingUsers.length === 0 ? (
            <div className="text-center py-12 flex flex-col items-center">
              <ShieldAlert size={48} className="text-muted-foreground/30 mb-4" />
-             <h3 className="text-xl font-bold font-heading mb-1">No pending requests</h3>
-             <p className="text-muted-foreground">You're all caught up! There are no new signups waiting for approval.</p>
+             <h3 className="text-xl font-bold font-heading mb-1">{content.admin.approvals.no_requests}</h3>
+             <p className="text-muted-foreground">{content.admin.approvals.no_requests_sub}</p>
            </div>
         ) : (
            <div className="flex flex-col gap-4">
@@ -74,7 +76,7 @@ export default function Approvals() {
                <div key={user.uid} className="flex justify-between items-center bg-secondary/10 border p-4 rounded-xl">
                  <div>
                    <p className="font-bold text-lg">{user.email}</p>
-                   <p className="text-sm text-primary uppercase tracking-wider font-bold">Requested Role: {user.role}</p>
+                   <p className="text-sm text-primary uppercase tracking-wider font-bold">{content.admin.approvals.req_role} {user.role}</p>
                  </div>
                  <div className="flex gap-3">
                    <button 
@@ -88,7 +90,7 @@ export default function Approvals() {
                      onClick={() => handleApprove(user.uid, user.email)}
                      className="px-6 py-2 bg-primary text-primary-foreground font-bold hover:bg-primary/90 rounded-lg flex items-center gap-2 transition-transform active:scale-95"
                    >
-                     <Check size={20} /> Approve
+                     <Check size={20} /> {content.admin.approvals.btn_approve}
                    </button>
                  </div>
                </div>
