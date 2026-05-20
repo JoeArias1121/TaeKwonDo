@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useEffect, useMemo, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  type ReactNode,
+} from "react";
 import en from "@/locales/en.json";
 import es from "@/locales/es.json";
 import { merge } from "lodash";
@@ -12,7 +19,9 @@ interface LanguageContextType {
   content: Dictionary;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined,
+);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {

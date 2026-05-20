@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const userDocRef = doc(db, "users", user.uid);
           const userDoc = await getDoc(userDocRef);
-          
+
           if (userDoc.exists()) {
             setAppUser(userDoc.data() as AppUser);
           } else {
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               role: "admin", // By default trying to be an admin
               isApproved: false, // Must be approved by superadmin
             };
-            // Note: We don't automatically setDoc here during auth state change, 
+            // Note: We don't automatically setDoc here during auth state change,
             // the Signup page should handle database creation so we catch errors there.
             setAppUser(newUser);
           }

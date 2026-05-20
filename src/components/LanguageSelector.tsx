@@ -2,12 +2,12 @@ import { useState, useRef, useEffect } from "react";
 import { Globe, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-export default function LanguageSelector({ 
-  compact = false, 
-  align = "right" 
-}: { 
-  compact?: boolean; 
-  align?: "left" | "right"; 
+export default function LanguageSelector({
+  compact = false,
+  align = "right",
+}: {
+  compact?: boolean;
+  align?: "left" | "right";
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const { language, setLanguage } = useLanguage();
@@ -18,7 +18,8 @@ export default function LanguageSelector({
     { code: "es", label: "ES", name: "Español" },
   ];
 
-  const selectedLangLabel = languages.find(l => l.code === language)?.label || "EN";
+  const selectedLangLabel =
+    languages.find((l) => l.code === language)?.label || "EN";
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -40,10 +41,7 @@ export default function LanguageSelector({
   };
 
   return (
-    <div
-      className="relative inline-block text-left"
-      ref={dropdownRef}
-    >
+    <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -52,9 +50,16 @@ export default function LanguageSelector({
         }`}
         title={compact ? `Language: ${selectedLangLabel}` : ""}
       >
-        <Globe size={16} className={compact ? "text-muted-foreground" : "text-muted-foreground mr-2"} />
+        <Globe
+          size={16}
+          className={
+            compact ? "text-muted-foreground" : "text-muted-foreground mr-2"
+          }
+        />
         {!compact && selectedLangLabel}
-        {!compact && <ChevronDown size={16} className="text-muted-foreground ml-2" />}
+        {!compact && (
+          <ChevronDown size={16} className="text-muted-foreground ml-2" />
+        )}
       </button>
 
       {/* Custom Dropdown Menu */}

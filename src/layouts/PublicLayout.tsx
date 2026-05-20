@@ -14,8 +14,7 @@ export default function PublicLayout() {
         </div>
       </main>
       <footer className="w-full bg-card border-t py-8 mt-auto">
-        <div className="container mx-auto px-6 text-center text-muted-foreground text-sm">
-        </div>
+        <div className="container mx-auto px-6 text-center text-muted-foreground text-sm"></div>
       </footer>
     </div>
   );

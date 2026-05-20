@@ -9,7 +9,9 @@ const __dirname = dirname(__filename);
 // This uses the Secret we injected into the GitHub Action environment
 const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT;
 if (!serviceAccountKey) {
-  console.warn("WARNING: FIREBASE_SERVICE_ACCOUNT not found. Make sure you are passing it in your GitHub Action.");
+  console.warn(
+    "WARNING: FIREBASE_SERVICE_ACCOUNT not found. Make sure you are passing it in your GitHub Action.",
+  );
 }
 
 const serviceAccount = serviceAccountKey ? JSON.parse(serviceAccountKey) : null;
@@ -30,7 +32,7 @@ async function fetchContent() {
   const data = {
     events: [],
     members: [],
-    aboutMe: { content: "" }
+    aboutMe: { content: "" },
   };
 
   try {
@@ -59,12 +61,11 @@ async function fetchContent() {
     }
 
     // Save the data to a JSON file that Vite can import
-    writeFileSync(
-      join(dataDir, "content.json"),
-      JSON.stringify(data, null, 2),
-    );
+    writeFileSync(join(dataDir, "content.json"), JSON.stringify(data, null, 2));
 
-    console.log("--- Content baked into src/data/content.json successfully! ---");
+    console.log(
+      "--- Content baked into src/data/content.json successfully! ---",
+    );
   } catch (error) {
     console.error("Error fetching Firestore data during prebuild:", error);
     process.exit(1);

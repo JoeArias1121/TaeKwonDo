@@ -5,9 +5,10 @@ export default function Contact() {
   const { content } = useLanguage();
   return (
     <div className="w-full h-full flex flex-col items-center justify-center py-20 px-6">
-      
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">{content.contact.get_in_touch}</h1>
+        <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+          {content.contact.get_in_touch}
+        </h1>
         <p className="text-lg text-muted-foreground max-w-lg mx-auto">
           {content.contact.subtitle}
         </p>
@@ -15,24 +16,26 @@ export default function Contact() {
 
       <div className="w-full max-w-2xl bg-card border rounded-3xl p-8 md:p-12 shadow-sm relative overflow-hidden">
         {/* Decorative corner */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[100px] pointer-events-none"/>
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-secondary/50 rounded-tr-[120px] pointer-events-none"/>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[100px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-secondary/50 rounded-tr-[120px] pointer-events-none" />
 
         <div className="flex flex-col gap-8 relative z-10">
-          
           <div className="flex items-start gap-4 group">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
               <MapPin className="text-primary" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-heading font-bold mb-1">{content.contact.location}</h2>
-              <a 
+              <h2 className="text-xl font-heading font-bold mb-1">
+                {content.contact.location}
+              </h2>
+              <a
                 href="https://www.google.com/maps/search/?api=1&query=238+Fort+Washington+Ave.+Bsmt.+New+York+NY+10032"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary underline font-medium hover:text-primary/80 transition-colors"
               >
-                238 Fort Washington Ave. Bsmt.<br/>
+                238 Fort Washington Ave. Bsmt.
+                <br />
                 New York, NY 10032
               </a>
             </div>
@@ -43,8 +46,13 @@ export default function Contact() {
               <Phone className="text-primary" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-heading font-bold mb-1">{content.contact.phone}</h2>
-              <a href="tel:+16467175634" className="text-muted-foreground text-lg hover:text-primary transition-colors">
+              <h2 className="text-xl font-heading font-bold mb-1">
+                {content.contact.phone}
+              </h2>
+              <a
+                href="tel:+16467175634"
+                className="text-muted-foreground text-lg hover:text-primary transition-colors"
+              >
                 1-646-717-5634
               </a>
             </div>
@@ -55,13 +63,17 @@ export default function Contact() {
               <Mail className="text-primary" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-heading font-bold mb-1">{content.contact.email}</h2>
-              <a href="mailto:ramon16itf@yahoo.com" className="text-muted-foreground text-lg hover:text-primary transition-colors">
+              <h2 className="text-xl font-heading font-bold mb-1">
+                {content.contact.email}
+              </h2>
+              <a
+                href="mailto:ramon16itf@yahoo.com"
+                className="text-muted-foreground text-lg hover:text-primary transition-colors"
+              >
                 ramon16itf@yahoo.com
               </a>
             </div>
           </div>
-
         </div>
       </div>
     </div>

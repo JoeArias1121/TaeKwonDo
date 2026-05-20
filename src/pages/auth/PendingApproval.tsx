@@ -22,24 +22,26 @@ export default function PendingApproval() {
         <div className="w-16 h-16 bg-secondary text-secondary-foreground rounded-full mx-auto flex items-center justify-center font-heading font-black text-2xl mb-6">
           !
         </div>
-        <h1 className="text-3xl font-heading font-bold mb-4">{content.auth.pending_title}</h1>
+        <h1 className="text-3xl font-heading font-bold mb-4">
+          {content.auth.pending_title}
+        </h1>
         <p className="text-muted-foreground mb-8 text-lg">
           {content.auth.pending_subtitle}
         </p>
-        
+
         <div className="flex flex-col gap-3">
-            <Link 
-                to="/" 
-                className="w-full border border-primary text-primary font-bold py-3 rounded-lg hover:bg-primary/5 transition-all block"
-            >
-                {content.auth.return_to_site}
-            </Link>
-            <button 
-                onClick={handleReturnToLogin}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mt-4"
-            >
-                {content.auth.return_to_login}
-            </button>
+          <Link
+            to="/"
+            className="w-full border border-primary text-primary font-bold py-3 rounded-lg hover:bg-primary/5 transition-all block"
+          >
+            {content.auth.return_to_site}
+          </Link>
+          <button
+            onClick={handleReturnToLogin}
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mt-4"
+          >
+            {content.auth.return_to_login}
+          </button>
         </div>
       </div>
     </div>

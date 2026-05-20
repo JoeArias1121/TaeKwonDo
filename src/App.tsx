@@ -34,13 +34,13 @@ function App() {
         <Route path="/pending-approval" element={<PendingApproval />} />
 
         {/* Protected Admin Routes */}
-        <Route 
-          path="/admin" 
+        <Route
+          path="/admin"
           element={
             <ProtectedRoute requireApproval={true}>
               <AdminLayout />
             </ProtectedRoute>
-          } 
+          }
         >
           <Route index element={<Dashboard />} />
           <Route path="events" element={<EventsManager />} />

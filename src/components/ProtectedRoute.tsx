@@ -2,7 +2,13 @@ import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
 
-export default function ProtectedRoute({ children, requireApproval = true }: { children: ReactNode, requireApproval?: boolean }) {
+export default function ProtectedRoute({
+  children,
+  requireApproval = true,
+}: {
+  children: ReactNode;
+  requireApproval?: boolean;
+}) {
   const { currentUser, appUser, loading } = useAuth();
 
   if (loading) {

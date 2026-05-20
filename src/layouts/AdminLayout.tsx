@@ -1,7 +1,17 @@
 import { useState } from "react";
 import { Outlet, NavLink, Link } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
-import { LayoutDashboard, CalendarDays, Users, FileText, ShieldCheck, LogOut, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  LayoutDashboard,
+  CalendarDays,
+  Users,
+  FileText,
+  ShieldCheck,
+  LogOut,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -11,39 +21,72 @@ export default function AdminLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const navItems = [
-    { name: content.admin.sidebar.dashboard, path: "/admin", icon: <LayoutDashboard size={20} />, exact: true },
-    { name: content.admin.sidebar.events, path: "/admin/events", icon: <CalendarDays size={20} /> },
-    { name: content.admin.sidebar.members, path: "/admin/members", icon: <Users size={20} /> },
-    { name: content.admin.sidebar.about_me, path: "/admin/about", icon: <FileText size={20} /> },
+    {
+      name: content.admin.sidebar.dashboard,
+      path: "/admin",
+      icon: <LayoutDashboard size={20} />,
+      exact: true,
+    },
+    {
+      name: content.admin.sidebar.events,
+      path: "/admin/events",
+      icon: <CalendarDays size={20} />,
+    },
+    {
+      name: content.admin.sidebar.members,
+      path: "/admin/members",
+      icon: <Users size={20} />,
+    },
+    {
+      name: content.admin.sidebar.about_me,
+      path: "/admin/about",
+      icon: <FileText size={20} />,
+    },
   ];
 
   if (appUser?.role === "superadmin") {
-    navItems.push({ name: content.admin.sidebar.approvals, path: "/admin/approvals", icon: <ShieldCheck size={20} /> });
+    navItems.push({
+      name: content.admin.sidebar.approvals,
+      path: "/admin/approvals",
+      icon: <ShieldCheck size={20} />,
+    });
   }
 
   return (
     <div className="flex h-screen bg-secondary/10 font-sans">
       {/* Sidebar */}
-      <aside className={`${isCollapsed ? "w-20" : "w-64"} bg-card border-r flex flex-col items-stretch flex-shrink-0 transition-all duration-300 relative`}>
+      <aside
+        className={`${isCollapsed ? "w-20" : "w-64"} bg-card border-r flex flex-col items-stretch flex-shrink-0 transition-all duration-300 relative`}
+      >
         {/* Toggle Button */}
-        <button 
+        <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="absolute -right-3 top-10 bg-primary text-primary-foreground rounded-full p-1 shadow-md z-20 hover:scale-110 transition-transform"
         >
           {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
         </button>
 
-        <div className={`h-20 flex items-center ${isCollapsed ? "justify-center" : "px-6"} border-b`}>
+        <div
+          className={`h-20 flex items-center ${isCollapsed ? "justify-center" : "px-6"} border-b`}
+        >
           {isCollapsed ? (
-            <div className="w-10 h-10 bg-primary text-primary-foreground rounded-xl flex items-center justify-center font-black text-xl shadow-sm">D</div>
+            <div className="w-10 h-10 bg-primary text-primary-foreground rounded-xl flex items-center justify-center font-black text-xl shadow-sm">
+              D
+            </div>
           ) : (
-            <div className="font-heading font-black text-2xl text-primary tracking-tight">Dojo CMS</div>
+            <div className="font-heading font-black text-2xl text-primary tracking-tight">
+              Dojo CMS
+            </div>
           )}
         </div>
-        
-        <div className={`flex-grow py-6 ${isCollapsed ? "px-2" : "px-4"} flex flex-col gap-2 overflow-y-auto`}>
+
+        <div
+          className={`flex-grow py-6 ${isCollapsed ? "px-2" : "px-4"} flex flex-col gap-2 overflow-y-auto`}
+        >
           {/* Language Selector */}
-          <div className={`mb-2 ${isCollapsed ? "flex justify-center" : "px-4 py-2"}`}>
+          <div
+            className={`mb-2 ${isCollapsed ? "flex justify-center" : "px-4 py-2"}`}
+          >
             <LanguageSelector compact={isCollapsed} align="left" />
           </div>
 
@@ -66,36 +109,50 @@ export default function AdminLayout() {
             </NavLink>
           ))}
           <div className="mt-auto">
-            <Link 
-              to="/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <Link
+              to="/"
+              target="_blank"
+              rel="noopener noreferrer"
               className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3 px-4"} py-3 rounded-xl font-semibold text-primary hover:bg-primary/10 transition-all`}
               title={isCollapsed ? content.admin.sidebar.home_page : ""}
             >
-              <div className="flex-shrink-0"><ExternalLink size={20} /></div>
-              {!isCollapsed && <span className="truncate">{content.admin.sidebar.home_page}</span>}
+              <div className="flex-shrink-0">
+                <ExternalLink size={20} />
+              </div>
+              {!isCollapsed && (
+                <span className="truncate">
+                  {content.admin.sidebar.home_page}
+                </span>
+              )}
             </Link>
           </div>
         </div>
 
-        <div className={`p-4 border-t mt-auto ${isCollapsed ? "flex flex-col items-center" : ""}`}>
+        <div
+          className={`p-4 border-t mt-auto ${isCollapsed ? "flex flex-col items-center" : ""}`}
+        >
           {!isCollapsed ? (
             <div className="bg-secondary/20 p-4 rounded-xl mb-4 overflow-hidden">
-              <p className="text-sm font-bold text-foreground truncate">{appUser?.email}</p>
-              <p className="text-xs text-primary font-bold uppercase tracking-wider mt-1">{appUser?.role}</p>
+              <p className="text-sm font-bold text-foreground truncate">
+                {appUser?.email}
+              </p>
+              <p className="text-xs text-primary font-bold uppercase tracking-wider mt-1">
+                {appUser?.role}
+              </p>
             </div>
           ) : (
             <div className="w-10 h-10 bg-secondary/30 rounded-full flex items-center justify-center mb-4 text-primary font-bold">
               {appUser?.email?.[0].toUpperCase()}
             </div>
           )}
-          <button 
+          <button
             onClick={logout}
             className={`flex items-center ${isCollapsed ? "justify-center" : "gap-2 px-4"} w-full py-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl transition-all font-semibold`}
             title={isCollapsed ? content.admin.sidebar.sign_out : ""}
           >
-            <div className="flex-shrink-0"><LogOut size={20} /></div>
+            <div className="flex-shrink-0">
+              <LogOut size={20} />
+            </div>
             {!isCollapsed && <span>{content.admin.sidebar.sign_out}</span>}
           </button>
         </div>
