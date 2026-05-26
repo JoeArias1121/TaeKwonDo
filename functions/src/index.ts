@@ -77,7 +77,9 @@ const translateText = async (
 const handleTranslationAndPoke = async (
   event: any,
   fieldsToTranslate: string[],
+  usedLang: string = "en",
 ) => {
+  //first check if language already exists and if not, skip the translation process.
   const before = event.data?.before.data();
   const after = event.data?.after.data();
 
@@ -87,21 +89,23 @@ const handleTranslationAndPoke = async (
     return;
   }
 
-  const updates: Record<string, string> = {};
+  const lang = "en" === usedLang ? "es" : "en";
+
+  const updates: Record<string, Record<string, string>> = { lang: {} };
 
   for (const field of fieldsToTranslate) {
-    const isChanged = !before || before[field] !== after[field];
-    if (isChanged && after[field]) {
-      const translated = await translateText(after[field], "es");
+    const isChanged =
+      !before || before[usedLang][field] !== after[usedLang][field];
+    if (isChanged && after[usedLang][field]) {
+      const translated = await translateText(after[usedLang][field], lang);
       if (translated) {
-        updates[`${field}_es`] = translated;
+        updates[lang][`${field}`] = translated;
       }
     }
   }
-
-  if (Object.keys(updates).length > 0) {
+  if (Object.keys(updates[usedLang]).length > 0) {
     // This will trigger onDocumentWritten again, but next time fields won't have changed.
-    console.log("Translating fields:", Object.keys(updates));
+    console.log("Translating fields:", Object.keys(updates[usedLang]));
     await event.data?.after.ref.update(updates);
   } else {
     // Only poke github if we didn't just update the document
