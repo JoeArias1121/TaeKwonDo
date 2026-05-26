@@ -79,7 +79,6 @@ const handleTranslationAndPoke = async (
   fieldsToTranslate: string[],
   usedLang: string = "en",
 ) => {
-  //first check if language already exists and if not, skip the translation process.
   const before = event.data?.before.data();
   const after = event.data?.after.data();
 
@@ -91,21 +90,34 @@ const handleTranslationAndPoke = async (
 
   const lang = "en" === usedLang ? "es" : "en";
 
-  const updates: Record<string, Record<string, string>> = { lang: {} };
+  // Create the updates object using the target language 'lang' (e.g. 'es' or 'en')
+  const updates: Record<string, any> = {};
+  updates[lang] = {};
 
   for (const field of fieldsToTranslate) {
-    const isChanged =
-      !before || before[usedLang][field] !== after[usedLang][field];
-    if (isChanged && after[usedLang][field]) {
-      const translated = await translateText(after[usedLang][field], lang);
+    // Check if the source language field has changed (supporting both flat and nested objects safely)
+    const beforeVal = before && before[usedLang] ? before[usedLang][field] : (before ? before[field] : undefined);
+    const afterVal = after[usedLang] ? after[usedLang][field] : after[field];
+
+    const isChanged = !before || beforeVal !== afterVal;
+
+    // Check if the target translation is currently missing (Self-Healing for network errors)
+    const isTargetMissing = !after[lang] || !after[lang][field];
+
+    if ((isChanged || isTargetMissing) && afterVal) {
+      const translated = await translateText(afterVal, lang);
       if (translated) {
-        updates[lang][`${field}`] = translated;
+        updates[lang][field] = translated;
       }
+    } else if (isChanged && !afterVal) {
+      // Clean up target translation if the source is cleared (Out-of-Sync Deletion)
+      updates[lang][field] = admin.firestore.FieldValue.delete();
     }
   }
-  if (Object.keys(updates[usedLang]).length > 0) {
-    // This will trigger onDocumentWritten again, but next time fields won't have changed.
-    console.log("Translating fields:", Object.keys(updates[usedLang]));
+
+  // Check if we actually found any translations to update
+  if (Object.keys(updates[lang]).length > 0) {
+    console.log(`Translating fields to ${lang}:`, Object.keys(updates[lang]));
     await event.data?.after.ref.update(updates);
   } else {
     // Only poke github if we didn't just update the document
@@ -120,7 +132,9 @@ export const triggerBuildOnEvents = onDocumentWritten(
     secrets: ["GITHUB_TOKEN", "TRANSLATION_API_KEY"],
   },
   async (event) => {
-    await handleTranslationAndPoke(event, ["title", "description"]);
+    const after = event.data?.after.data();
+    const sourceLang = after?.sourceLang || "en";
+    await handleTranslationAndPoke(event, ["title", "description"], sourceLang);
   },
 );
 
@@ -131,7 +145,9 @@ export const triggerBuildOnMembers = onDocumentWritten(
     secrets: ["GITHUB_TOKEN", "TRANSLATION_API_KEY"],
   },
   async (event) => {
-    await handleTranslationAndPoke(event, ["name", "rank", "bio"]);
+    const after = event.data?.after.data();
+    const sourceLang = after?.sourceLang || "en";
+    await handleTranslationAndPoke(event, ["name", "rank"], sourceLang);
   },
 );
 
@@ -142,6 +158,8 @@ export const triggerBuildOnSettings = onDocumentWritten(
     secrets: ["GITHUB_TOKEN", "TRANSLATION_API_KEY"],
   },
   async (event) => {
-    await handleTranslationAndPoke(event, ["title", "role", "bio"]);
+    const after = event.data?.after.data();
+    const sourceLang = after?.sourceLang || "en";
+    await handleTranslationAndPoke(event, ["title", "role", "bio"], sourceLang);
   },
 );

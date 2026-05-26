@@ -23,6 +23,11 @@ import {
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+interface MemberLangMap {
+  name?: string;
+  rank?: string;
+}
+
 interface DojoMember {
   id: string;
   name: string;
@@ -31,10 +36,13 @@ interface DojoMember {
   imageUrl: string;
   createdAt?: string;
   updatedAt?: string;
+  en?: MemberLangMap;
+  es?: MemberLangMap;
+  sourceLang?: string;
 }
 
 export default function MembersManager() {
-  const { content } = useLanguage();
+  const { content, language } = useLanguage();
   const [members, setMembers] = useState<DojoMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,8 +89,10 @@ export default function MembersManager() {
 
   const handleEdit = (member: DojoMember) => {
     setEditingId(member.id);
-    setName(member.name);
-    setRank(member.rank);
+    // Read from the active language parent map, fallback to flat fields for legacy docs
+    const langMap = member[language];
+    setName(langMap?.name ?? member.name);
+    setRank(langMap?.rank ?? member.rank);
     setJoinDate(member.joinDate);
     setImageFile(null);
     setIsModalOpen(true);
@@ -123,8 +133,9 @@ export default function MembersManager() {
 
       if (editingId) {
         const updateData: Partial<DojoMember> = {
-          name,
-          rank,
+          // Save name and rank inside the active language parent map
+          [language]: { name, rank },
+          sourceLang: language,
           joinDate,
           updatedAt: new Date().toISOString(),
         };
@@ -136,8 +147,9 @@ export default function MembersManager() {
         });
       } else {
         await addDoc(collection(db, "members"), {
-          name,
-          rank,
+          // Save name and rank inside the active language parent map
+          [language]: { name, rank },
+          sourceLang: language,
           joinDate,
           imageUrl: finalImageUrl,
           createdAt: new Date().toISOString(),

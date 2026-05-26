@@ -31,7 +31,8 @@
     "title": "Próximos Eventos",
     "subtitle": "Manténgase conectado con nuestra comunidad a través de torneos, exámenes de cinturón y seminarios.",
     "past_events": "Eventos Pasados",
-    "no_events": "No hay eventos próximos en este momento."
+    "no_events": "No hay eventos próximos en este momento.",
+    "options": ["Competición", "Donación", "Ceremonia", "Seminario"]
   },
   "members": {
     "title": "Nuestros Miembros",

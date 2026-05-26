@@ -23,7 +23,20 @@ import {
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-export type EventType = "Competition" | "Fundraising" | "Ceremony";
+export type EventType =
+  | "Competition"
+  | "Fundraising"
+  | "Ceremony"
+  | "Seminar"
+  | "Competición"
+  | "Donación"
+  | "Ceremonia"
+  | "Seminario";
+
+interface EventLangMap {
+  title?: string;
+  description?: string;
+}
 
 interface DojoEvent {
   id: string;
@@ -36,10 +49,13 @@ interface DojoEvent {
   imageUrl: string;
   createdAt?: string;
   updatedAt?: string;
+  en?: EventLangMap;
+  es?: EventLangMap;
+  sourceLang?: string;
 }
 
 export default function EventsManager() {
-  const { content } = useLanguage();
+  const { content, language } = useLanguage();
   const [events, setEvents] = useState<DojoEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +65,9 @@ export default function EventsManager() {
   // Form State
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [eventType, setEventType] = useState<EventType>("Competition");
+  const [eventType, setEventType] = useState<EventType>(
+    language === "en" ? "Competition" : "Competición",
+  );
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
@@ -92,8 +110,10 @@ export default function EventsManager() {
 
   const handleEdit = (evt: DojoEvent) => {
     setEditingId(evt.id);
-    setTitle(evt.title);
-    setDescription(evt.description);
+    // Read from the active language parent map, fallback to flat fields for legacy docs
+    const langMap = evt[language];
+    setTitle(langMap?.title ?? evt.title);
+    setDescription(langMap?.description ?? evt.description);
     setEventType(evt.eventType);
     setDate(evt.date);
     setTime(evt.time);
@@ -139,8 +159,9 @@ export default function EventsManager() {
       // 2. Save document to firestore
       if (editingId) {
         const updateData: Partial<DojoEvent> = {
-          title,
-          description,
+          // Save title and description inside the active language parent map
+          [language]: { title, description },
+          sourceLang: language,
           eventType,
           date,
           time,
@@ -155,8 +176,9 @@ export default function EventsManager() {
         });
       } else {
         await addDoc(collection(db, "events"), {
-          title,
-          description,
+          // Save title and description inside the active language parent map
+          [language]: { title, description },
+          sourceLang: language,
           eventType,
           date,
           time,
@@ -354,9 +376,11 @@ export default function EventsManager() {
                     onChange={(e) => setEventType(e.target.value as EventType)}
                     className="w-full border rounded-xl px-4 py-2.5 bg-input/50 focus:ring-2 focus:ring-primary/50 outline-none"
                   >
-                    <option value="Competition">Competition</option>
-                    <option value="Fundraising">Fundraising</option>
-                    <option value="Ceremony">Ceremony</option>
+                    {content.events.options.map((option: string) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>

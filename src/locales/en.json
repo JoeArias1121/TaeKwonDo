@@ -31,7 +31,8 @@
     "title": "Upcoming Events",
     "subtitle": "Stay connected with our community through upcoming tournaments, belt testings, and seminars.",
     "past_events": "Past Events",
-    "no_events": "No upcoming events at this time."
+    "no_events": "No upcoming events at this time.",
+    "options": ["Competition", "Fundraising", "Ceremony", "Seminar"]
   },
   "members": {
     "title": "Our Members",

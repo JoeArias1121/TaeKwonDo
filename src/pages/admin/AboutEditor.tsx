@@ -7,8 +7,25 @@ import { Loader2, Save } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+interface AboutLangMap {
+  title?: string;
+  role?: string;
+  bio?: string;
+}
+
+interface AboutMeData {
+  title?: string;
+  role?: string;
+  bio?: string;
+  imageUrl?: string;
+  sourceLang?: string;
+  updatedAt?: string;
+  en?: AboutLangMap;
+  es?: AboutLangMap;
+}
+
 export default function AboutEditor() {
-  const { content } = useLanguage();
+  const { content, language } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -26,10 +43,12 @@ export default function AboutEditor() {
       setLoading(true);
       const aboutDoc = await getDoc(doc(db, "settings", "aboutMe"));
       if (aboutDoc.exists()) {
-        const data = aboutDoc.data();
-        setTitle(data.title || "Grand Master Ramon");
-        setRole(data.role || "Lead Instructor");
-        setBio(data.bio || "");
+        const data = aboutDoc.data() as AboutMeData;
+        // Read from the active language parent map, fallback to flat fields for legacy docs
+        const langMap = data[language];
+        setTitle(langMap?.title ?? data.title ?? "Grand Master Ramon");
+        setRole(langMap?.role ?? data.role ?? "Lead Instructor");
+        setBio(langMap?.bio ?? data.bio ?? "");
         setCurrentImageUrl(data.imageUrl || "");
       }
     } catch (err) {
@@ -69,15 +88,17 @@ export default function AboutEditor() {
       }
 
       // Save to 'settings/aboutMe' singleton document
+      const saveData: AboutMeData = {
+        // Save title/role/bio inside the active language parent map
+        [language]: { title, role, bio },
+        sourceLang: language,
+        imageUrl: finalImageUrl,
+        updatedAt: new Date().toISOString(),
+      };
+
       await setDoc(
         doc(db, "settings", "aboutMe"),
-        {
-          title,
-          role,
-          bio,
-          imageUrl: finalImageUrl,
-          updatedAt: new Date().toISOString(),
-        },
+        saveData,
         { merge: true },
       );
 
