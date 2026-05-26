@@ -426,21 +426,29 @@ export default function EventsManager() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold mb-1">
+                <span className="block text-sm font-bold mb-1">
                   {content.admin.events.form_cover}{" "}
                   {editingId && (
                     <span className="text-muted-foreground font-normal">
                       {content.admin.events.form_cover_hint}
                     </span>
                   )}
+                </span>
+                <label className="w-full flex items-center justify-between border border-dashed rounded-xl px-4 py-3 bg-secondary/20 cursor-pointer hover:bg-secondary/30 transition-all border-border/80">
+                  <span className="text-sm text-muted-foreground truncate mr-2">
+                    {imageFile ? imageFile.name : content.admin.events.form_cover_select}
+                  </span>
+                  <span className="text-xs bg-primary text-primary-foreground px-3 py-1.5 rounded-lg font-bold flex-shrink-0">
+                    {content.admin.events.form_cover_browse}
+                  </span>
+                  <input
+                    required={!editingId}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                    className="hidden"
+                  />
                 </label>
-                <input
-                  required={!editingId}
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                  className="w-full border border-dashed rounded-xl px-4 py-3 bg-secondary/20 cursor-pointer"
-                />
               </div>
 
               <div className="flex justify-end gap-3 mt-4">

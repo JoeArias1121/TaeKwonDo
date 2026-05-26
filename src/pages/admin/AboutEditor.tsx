@@ -159,12 +159,20 @@ export default function AboutEditor() {
                   </span>
                 )}
               </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                className="text-sm border border-dashed rounded-lg p-2 bg-secondary/10 cursor-pointer"
-              />
+              <label className="w-full flex items-center justify-between border border-dashed rounded-xl px-3 py-2 bg-secondary/20 cursor-pointer hover:bg-secondary/30 transition-all border-border/80">
+                <span className="text-xs text-muted-foreground truncate mr-2">
+                  {imageFile ? imageFile.name : content.admin.about.form_avatar_select}
+                </span>
+                <span className="text-[10px] bg-primary text-primary-foreground px-2 py-1 rounded-md font-bold flex-shrink-0">
+                  {content.admin.about.form_avatar_browse}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                  className="hidden"
+                />
+              </label>
             </div>
 
             {/* Text Fields */}
