@@ -34,23 +34,21 @@ export type EventType =
   | "Seminario";
 
 interface EventLangMap {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
+  eventType: EventType;
 }
 
 interface DojoEvent {
   id: string;
-  title: string;
-  description: string;
-  eventType: EventType;
   date: string;
   time: string;
   location: string;
   imageUrl: string;
   createdAt?: string;
   updatedAt?: string;
-  en?: EventLangMap;
-  es?: EventLangMap;
+  en: EventLangMap;
+  es: EventLangMap;
   sourceLang?: string;
 }
 
@@ -100,7 +98,7 @@ export default function EventsManager() {
     setEditingId(null);
     setTitle("");
     setDescription("");
-    setEventType("Competition");
+    setEventType(language === "en" ? "Competition" : "Competición");
     setDate("");
     setTime("");
     setLocation("");
@@ -110,11 +108,11 @@ export default function EventsManager() {
 
   const handleEdit = (evt: DojoEvent) => {
     setEditingId(evt.id);
-    // Read from the active language parent map, fallback to flat fields for legacy docs
+    // Read from the active language parent map
     const langMap = evt[language];
-    setTitle(langMap?.title ?? evt.title);
-    setDescription(langMap?.description ?? evt.description);
-    setEventType(evt.eventType);
+    setTitle(langMap.title);
+    setDescription(langMap.description);
+    setEventType(langMap.eventType);
     setDate(evt.date);
     setTime(evt.time);
     setLocation(evt.location);
@@ -159,10 +157,9 @@ export default function EventsManager() {
       // 2. Save document to firestore
       if (editingId) {
         const updateData: Partial<DojoEvent> = {
-          // Save title and description inside the active language parent map
-          [language]: { title, description },
+          // Save title, description, eventType inside the active language parent map
+          [language]: { title, description, eventType },
           sourceLang: language,
-          eventType,
           date,
           time,
           location,
@@ -175,17 +172,19 @@ export default function EventsManager() {
           id: loadingToast,
         });
       } else {
-        await addDoc(collection(db, "events"), {
-          // Save title and description inside the active language parent map
-          [language]: { title, description },
+        // Create new document
+        const addEvent: Partial<DojoEvent> = {
+          // Save title, description, eventType inside the active language parent map
+          [language]: { title, description, eventType },
           sourceLang: language,
-          eventType,
           date,
           time,
           location,
           imageUrl: finalImageUrl,
           createdAt: new Date().toISOString(),
-        });
+        };
+
+        await addDoc(collection(db, "events"), addEvent);
         toast.success(content.admin.events.toast_success_create, {
           id: loadingToast,
         });
@@ -260,7 +259,7 @@ export default function EventsManager() {
                 {evt.imageUrl ? (
                   <img
                     src={evt.imageUrl}
-                    alt={evt.title}
+                    alt={evt[language]?.title}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -272,14 +271,14 @@ export default function EventsManager() {
               <div className="flex-grow flex flex-col min-w-0">
                 <div className="flex justify-between items-start gap-2 mb-3">
                   <h3 className="font-heading font-black text-xl line-clamp-1 break-words leading-tight">
-                    {evt.title}
+                    {evt[language]?.title}
                   </h3>
                   <span className="text-[10px] font-black uppercase tracking-widest bg-primary/10 text-primary px-2.5 py-1.5 rounded-lg border border-primary/20 flex-shrink-0">
-                    {evt.eventType}
+                    {evt[language]?.eventType}
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-6 line-clamp-4 break-words leading-relaxed">
-                  {evt.description}
+                  {evt[language]?.description}
                 </p>
 
                 <div className="text-[11px] font-bold text-foreground/80 bg-secondary/30 rounded-xl p-3 flex flex-col gap-2 mb-4 border border-border/50">

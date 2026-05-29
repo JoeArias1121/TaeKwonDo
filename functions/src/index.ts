@@ -96,13 +96,13 @@ const handleTranslationAndPoke = async (
 
   for (const field of fieldsToTranslate) {
     // Check if the source language field has changed (supporting both flat and nested objects safely)
-    const beforeVal = before && before[usedLang] ? before[usedLang][field] : (before ? before[field] : undefined);
-    const afterVal = after[usedLang] ? after[usedLang][field] : after[field];
+    const beforeVal = before?.[usedLang][field];
+    const afterVal = after[usedLang][field];
 
     const isChanged = !before || beforeVal !== afterVal;
 
     // Check if the target translation is currently missing (Self-Healing for network errors)
-    const isTargetMissing = !after[lang] || !after[lang][field];
+    const isTargetMissing = !after[lang] || !after[lang][field]; //TODO: for missing fields have send back an error saying so
 
     if ((isChanged || isTargetMissing) && afterVal) {
       const translated = await translateText(afterVal, lang);
