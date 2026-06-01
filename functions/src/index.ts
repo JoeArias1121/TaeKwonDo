@@ -127,3 +127,13 @@ export const triggerBuildOnSettings = onDocumentWritten(
     await pokeGitHub();
   },
 );
+
+export const triggerBuildGallery = onDocumentWritten(
+  {
+    document: "gallery/{docId}",
+    secrets: ["GITHUB_TOKEN"],
+  },
+  async () => {
+    await pokeGitHub();
+  },
+);
