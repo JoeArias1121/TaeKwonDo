@@ -37,7 +37,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = language;
-  }, []);
+  }, [language]);
 
   const content = useMemo(() => {
     if (language === "en") return en;

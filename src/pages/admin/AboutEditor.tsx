@@ -1,119 +1,23 @@
-import { useState, useEffect } from "react";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "@/lib/firebase";
-import { toast } from "sonner";
 import { Loader2, Save } from "lucide-react";
-import { optimizeImage } from "@/lib/imageOptimization";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-interface AboutLangMap {
-  title?: string;
-  role?: string;
-  bio?: string;
-}
-
-interface AboutMeData {
-  title?: string;
-  role?: string;
-  bio?: string;
-  imageUrl?: string;
-  sourceLang?: string;
-  updatedAt?: string;
-  en?: AboutLangMap;
-  es?: AboutLangMap;
-}
+import { useAboutEditor } from "@/hooks/useAboutEditor";
 
 export default function AboutEditor() {
-  const { content, language } = useLanguage();
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-
-  // Form State
-  const [title, setTitle] = useState("Grand Master Ramon");
-  const [role, setRole] = useState("Lead Instructor");
-  const [bio, setBio] = useState("");
-
-  // Image handling
-  const [currentImageUrl, setCurrentImageUrl] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-
-  const fetchAboutData = async () => {
-    try {
-      setLoading(true);
-      const aboutDoc = await getDoc(doc(db, "settings", "aboutMe"));
-      if (aboutDoc.exists()) {
-        const data = aboutDoc.data() as AboutMeData;
-        // Read from the active language parent map, fallback to flat fields for legacy docs
-        const langMap = data[language];
-        setTitle(langMap?.title ?? data.title ?? "Grand Master Ramon");
-        setRole(langMap?.role ?? data.role ?? "Lead Instructor");
-        setBio(langMap?.bio ?? data.bio ?? "");
-        setCurrentImageUrl(data.imageUrl || "");
-      }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unknown error occurred";
-      toast.error("Failed to load about data: " + errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAboutData();
-  }, []);
-
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    const loadingToast = toast.loading(content.admin.about.toast_saving);
-
-    try {
-      let finalImageUrl = currentImageUrl;
-
-      // If a new image was selected, upload it
-      if (imageFile) {
-        const optimizedFile = await optimizeImage(imageFile);
-        const storageRef = ref(storage, `settings/about_avatar_${Date.now()}`);
-
-        const metadata = {
-          contentType: "image/webp",
-          cacheControl: "public,max-age=31536000",
-        };
-
-        await uploadBytes(storageRef, optimizedFile, metadata);
-        finalImageUrl = await getDownloadURL(storageRef);
-        setCurrentImageUrl(finalImageUrl);
-      }
-
-      // Save to 'settings/aboutMe' singleton document
-      const saveData: AboutMeData = {
-        // Save title/role/bio inside the active language parent map
-        [language]: { title, role, bio },
-        sourceLang: language,
-        imageUrl: finalImageUrl,
-        updatedAt: new Date().toISOString(),
-      };
-
-      await setDoc(
-        doc(db, "settings", "aboutMe"),
-        saveData,
-        { merge: true },
-      );
-
-      toast.success(content.admin.about.toast_success, { id: loadingToast });
-      setImageFile(null); // Reset file input implicitly
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unknown error occurred";
-      toast.error(content.admin.about.toast_error + errorMessage, {
-        id: loadingToast,
-      });
-    } finally {
-      setSaving(false);
-    }
-  };
+  const { content } = useLanguage();
+  const {
+    loading,
+    saving,
+    title,
+    setTitle,
+    role,
+    setRole,
+    bio,
+    setBio,
+    currentImageUrl,
+    imageFile,
+    setImageFile,
+    handleSave,
+  } = useAboutEditor();
 
   if (loading) {
     return (
