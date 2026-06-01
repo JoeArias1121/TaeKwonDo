@@ -1,23 +1,12 @@
-import Event, { type EventType } from "@/components/Event";
+import Event from "@/components/Event";
 import { CalendarX2 } from "lucide-react";
 import staticData from "@/data/content.json";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-interface DojoEvent {
-  id: string;
-  title: string;
-  title_es?: string;
-  description: string;
-  description_es?: string;
-  eventType: EventType;
-  date: string;
-  time: string;
-  location: string;
-  imageUrl: string;
-}
+import type { DojoEvent, EventType } from "@/types";
 
 export default function Events() {
-  const events = (staticData.events || []) as DojoEvent[];
+  // Use static data baked from Firebase during prebuild
+  const events = (staticData.events || []) as unknown as DojoEvent[];
   const { language, content } = useLanguage();
 
   // Sort events by date descending to match original query
@@ -31,10 +20,13 @@ export default function Events() {
   const pastEvents = sortedEvents.filter((e) => e.date < today);
 
   const getTranslated = (evt: DojoEvent, field: "title" | "description") => {
-    if (language === "es") {
-      return evt[`${field}_es`] || evt[field];
-    }
-    return evt[field];
+    const langData = language === "es" ? evt.es : evt.en;
+    return langData?.[field] || evt.en?.[field] || "";
+  };
+
+  const getTranslatedEvent = (evt: DojoEvent): EventType => {
+    const langData = language === "es" ? evt.es : evt.en;
+    return langData?.eventType || evt.en?.eventType || "Competition";
   };
 
   return (
@@ -73,7 +65,7 @@ export default function Events() {
                     title={getTranslated(evt, "title")}
                     description={getTranslated(evt, "description")}
                     imageUrl={evt.imageUrl}
-                    eventType={evt.eventType}
+                    eventType={getTranslatedEvent(evt)}
                     date={evt.date}
                     time={evt.time}
                     location={evt.location}
@@ -98,7 +90,7 @@ export default function Events() {
                     title={getTranslated(evt, "title")}
                     description={getTranslated(evt, "description")}
                     imageUrl={evt.imageUrl}
-                    eventType={evt.eventType}
+                    eventType={getTranslatedEvent(evt)}
                     date={evt.date}
                     time={evt.time}
                     location={evt.location}

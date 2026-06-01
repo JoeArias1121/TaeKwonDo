@@ -52,7 +52,7 @@ export function useMembersManager() {
   const handleEdit = (member: DojoMember) => {
     setEditingId(member.id);
     const langMap = member[language];
-    setName(langMap.name);
+    setName(member.name);
     setRank(langMap.rank);
     setJoinDate(member.joinDate);
     setImageFile(null);
@@ -93,7 +93,6 @@ export function useMembersManager() {
       }
 
       const oppositeLang = language === "en" ? "es" : "en";
-      let translatedName = "";
       let translatedRank = "";
 
       if (editingId) {
@@ -104,13 +103,6 @@ export function useMembersManager() {
           return;
         }
 
-        // Only call translation API if the value actually changed
-        if (name !== existingMember[language].name) {
-          translatedName = await translateText(name, oppositeLang);
-        } else {
-          translatedName = existingMember[oppositeLang].name;
-        }
-
         if (rank !== existingMember[language].rank) {
           translatedRank = await translateText(rank, oppositeLang);
         } else {
@@ -119,11 +111,12 @@ export function useMembersManager() {
 
         const updateData: Partial<DojoMember> = {
           en: language === "en"
-            ? { name, rank }
-            : { name: translatedName, rank: translatedRank },
+            ? { rank }
+            : { rank: translatedRank },
           es: language === "es"
-            ? { name, rank }
-            : { name: translatedName, rank: translatedRank },
+            ? { rank }
+            : { rank: translatedRank },
+          name,
           sourceLang: language,
           joinDate,
           updatedAt: new Date().toISOString(),
@@ -135,17 +128,16 @@ export function useMembersManager() {
           id: loadingToast,
         });
       } else {
-        // Translation for new document
-        translatedName = await translateText(name, oppositeLang);
         translatedRank = await translateText(rank, oppositeLang);
 
         const addMember: Omit<DojoMember, "id"> = {
           en: language === "en"
-            ? { name, rank }
-            : { name: translatedName, rank: translatedRank },
+            ? { rank }
+            : { rank: translatedRank },
           es: language === "es"
-            ? { name, rank }
-            : { name: translatedName, rank: translatedRank },
+            ? { rank }
+            : { rank: translatedRank },
+          name,
           sourceLang: language,
           joinDate,
           imageUrl: finalImageUrl || "",

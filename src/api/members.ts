@@ -9,7 +9,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { DojoMember } from "@/types";
+import type { DojoMember } from "@/types";
 
 export const getMembers = async (): Promise<DojoMember[]> => {
   const q = query(collection(db, "members"), orderBy("joinDate", "asc"));

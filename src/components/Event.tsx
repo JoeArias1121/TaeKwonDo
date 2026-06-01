@@ -1,6 +1,5 @@
 import { Calendar, MapPin, Clock } from "lucide-react";
-
-export type EventType = "Competition" | "Fundraising" | "Ceremony";
+import type { EventType } from "@/types";
 
 export default function Event({
   title,

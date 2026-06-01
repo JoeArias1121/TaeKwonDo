@@ -21,8 +21,7 @@ if (serviceAccount) {
     credential: admin.credential.cert(serviceAccount),
   });
 } else {
-  // Fallback for local development if you have the firebase CLI logged in
-  admin.initializeApp();
+  throw new Error("FIREBASE_SERVICE_ACCOUNT not found");
 }
 
 const db = admin.firestore();

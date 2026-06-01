@@ -28,12 +28,12 @@ export interface DojoEvent {
 }
 
 export interface MemberLangMap {
-  name: string;
   rank: string;
 }
 
 export interface DojoMember {
   id: string;
+  name: string;
   joinDate: string;
   imageUrl: string;
   createdAt?: string;

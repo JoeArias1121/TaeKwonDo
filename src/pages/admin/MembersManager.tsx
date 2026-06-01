@@ -74,7 +74,7 @@ export default function MembersManager() {
                 {member.imageUrl ? (
                   <img
                     src={member.imageUrl}
-                    alt={member[language].name}
+                    alt={member.name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -85,7 +85,7 @@ export default function MembersManager() {
               </div>
               <div className="flex-grow flex flex-col min-h-[5rem] min-w-0">
                 <h3 className="font-heading font-bold text-xl break-words leading-tight">
-                  {member[language].name}
+                  {member.name}
                 </h3>
                 <p className="text-sm text-primary font-bold uppercase tracking-wider break-words">
                   {member[language].rank}
@@ -104,7 +104,7 @@ export default function MembersManager() {
                     <Edit size={18} />
                   </button>
                   <button
-                    onClick={() => handleDelete(member.id, member[language].name)}
+                    onClick={() => handleDelete(member.id, member.name)}
                     className="text-destructive bg-destructive/10 hover:bg-destructive/20 p-2 rounded-xl transition-all shadow-sm active:scale-95"
                     title="Remove Member"
                   >

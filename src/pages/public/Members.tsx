@@ -1,25 +1,16 @@
 import Member from "@/components/Member";
 import staticData from "@/data/content.json";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-interface DojoMember {
-  id: string;
-  name: string;
-  name_es?: string;
-  rank: string;
-  rank_es?: string;
-  imageUrl: string;
-}
+import type { DojoMember } from "@/types";
 
 export default function Members() {
-  const members = (staticData.members || []) as DojoMember[];
+  // Use static data baked from Firebase during prebuild
+  const members = (staticData.members || []) as unknown as DojoMember[];
   const { language, content } = useLanguage();
 
-  const getTranslated = (member: DojoMember, field: "name" | "rank") => {
-    if (language === "es") {
-      return member[`${field}_es`] || member[field];
-    }
-    return member[field];
+  const getRankTranslated = (member: DojoMember) => {
+    const langData = language === "es" ? member.es : member.en;
+    return langData?.rank || member.en?.rank || "";
   };
 
   return (
@@ -45,9 +36,9 @@ export default function Members() {
             {members.map((member) => (
               <Member
                 key={member.id}
-                name={getTranslated(member, "name")}
+                name={member.name}
                 avatarUrl={member.imageUrl}
-                rank={getTranslated(member, "rank")}
+                rank={getRankTranslated(member)}
               />
             ))}
           </div>

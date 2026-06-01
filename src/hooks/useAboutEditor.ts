@@ -14,8 +14,8 @@ export function useAboutEditor() {
   const [saving, setSaving] = useState(false);
 
   // Form State
-  const [title, setTitle] = useState("Grand Master Ramon");
-  const [role, setRole] = useState("Lead Instructor");
+  const [title, setTitle] = useState("");
+  const [role, setRole] = useState("");
   const [bio, setBio] = useState("");
 
   // Image handling

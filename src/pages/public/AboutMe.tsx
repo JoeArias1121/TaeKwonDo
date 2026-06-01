@@ -1,26 +1,22 @@
 import avatarFallback from "@/assets/avatar.jpg";
 import staticData from "@/data/content.json";
 import { useLanguage } from "@/contexts/LanguageContext";
+import type { AboutMeData } from "@/types";
 
 export default function AboutMe() {
   const { language } = useLanguage();
-  // Use static data if available, otherwise fallback to defaults
-  const data = (staticData.aboutMe || {}) as Record<string, string>;
+  // Use static data baked from Firebase during prebuild
+  const data = (staticData.aboutMe || {}) as unknown as AboutMeData;
 
-  const getTranslated = (field: string, fallback: string) => {
-    if (language === "es" && data[`${field}_es`]) {
-      return data[`${field}_es`];
-    }
-    return data[field] || fallback;
+  const getTranslated = (field: "title" | "role" | "bio") => {
+    const langData = language === "es" ? data.es : data.en;
+    return langData?.[field] || data.en?.[field] || "";
   };
 
   const aboutData = {
-    title: getTranslated("title", "Grand Master Ramon"),
-    role: getTranslated("role", "Lead Instructor"),
-    bio: getTranslated(
-      "bio",
-      "Welcome to our Dojo. I have dedicated my life to the practice and teaching of authentic ITF Taekwon-Do.",
-    ),
+    title: getTranslated("title"),
+    role: getTranslated("role"),
+    bio: getTranslated("bio"),
     imageUrl: data.imageUrl || avatarFallback,
   };
 
