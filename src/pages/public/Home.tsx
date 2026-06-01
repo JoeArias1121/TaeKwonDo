@@ -1,9 +1,25 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import staticData from "@/data/content.json";
+import type { GalleryItem } from "@/types";
 
 export default function Home() {
   const { content } = useLanguage();
+  const galleryItems = (staticData.gallery || []) as unknown as GalleryItem[];
+
+  const getGridColsClass = (n: number) => {
+    if (n === 1) return "grid-cols-1";
+    if (n === 2) return "grid-cols-2";
+    if (n === 3) return "grid-cols-2 lg:grid-cols-3";
+    if (n === 4) return "grid-cols-2";
+    if (n === 5) return "grid-cols-2 xl:grid-cols-5";
+    if (n === 6) return "grid-cols-2 lg:grid-cols-3";
+    if (n === 7) return "grid-cols-2 lg:grid-cols-4";
+    if (n === 8) return "grid-cols-2 lg:grid-cols-4";
+    return "grid-cols-2 lg:grid-cols-4";
+  };
+
   return (
     <div className="flex flex-col w-full h-full">
       {/* Hero Section */}
@@ -41,7 +57,7 @@ export default function Home() {
       </section>
 
       {/* Content Section */}
-      <section className="py-20 w-full bg-secondary/30 flex-grow">
+      <section className="py-20 w-full bg-secondary/30">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
             {/* Mission Card */}
@@ -77,6 +93,42 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Gallery Section */}
+      {galleryItems.length > 0 && (
+        <section className="py-20 w-full bg-background flex-grow">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-heading font-black mb-4">
+                {content.home.gallery_title}
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                {content.home.gallery_subtitle}
+              </p>
+            </div>
+
+            <div className="flex justify-center w-full">
+              <div className={`grid ${getGridColsClass(galleryItems.length)} gap-4 w-fit`}>
+                {galleryItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="group relative overflow-hidden rounded-3xl bg-secondary/10 border border-border/40 shadow-sm w-full max-w-[224px] aspect-square hover:shadow-md hover:scale-105 transition-all duration-300 mx-auto"
+                  >
+                    <img
+                      src={item.imageUrl}
+                      alt="Gallery item"
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Subtle glassmorphism overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

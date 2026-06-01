@@ -13,6 +13,7 @@ import EventsManager from "@/pages/admin/EventsManager";
 import MembersManager from "@/pages/admin/MembersManager";
 import AboutEditor from "@/pages/admin/AboutEditor";
 import Approvals from "@/pages/admin/Approvals";
+import GalleryManager from "@/pages/admin/GalleryManager";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AdminLayout from "@/layouts/AdminLayout";
 
@@ -47,6 +48,7 @@ function App() {
           <Route path="members" element={<MembersManager />} />
           <Route path="about" element={<AboutEditor />} />
           <Route path="approvals" element={<Approvals />} />
+          <Route path="gallery" element={<GalleryManager />} />
         </Route>
       </Routes>
     </>

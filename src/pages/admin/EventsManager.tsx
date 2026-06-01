@@ -120,14 +120,14 @@ export default function EventsManager() {
                   <button
                     onClick={() => handleEdit(evt)}
                     className="text-primary bg-primary/10 hover:bg-primary/20 p-2 rounded-xl transition-all shadow-sm active:scale-95"
-                    title="Edit Event"
+                    title={content.admin.events.btn_edit_tooltip}
                   >
                     <Edit size={18} />
                   </button>
                   <button
                     onClick={() => handleDelete(evt.id)}
                     className="text-destructive bg-destructive/10 hover:bg-destructive/20 p-2 rounded-xl transition-all shadow-sm active:scale-95"
-                    title="Delete Event"
+                    title={content.admin.events.btn_delete_tooltip}
                   >
                     <Trash2 size={18} />
                   </button>

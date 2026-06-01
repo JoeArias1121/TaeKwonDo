@@ -32,6 +32,7 @@ async function fetchContent() {
     events: [],
     members: [],
     aboutMe: { content: "" },
+    gallery: [],
   };
 
   try {
@@ -52,6 +53,12 @@ async function fetchContent() {
     if (aboutSnap.exists) {
       data.aboutMe = aboutSnap.data();
     }
+
+    // 4. Fetch Gallery Items (Sorted by order asc)
+    const gallerySnap = await db.collection("gallery").orderBy("order", "asc").get();
+    gallerySnap.forEach((doc) => {
+      data.gallery.push({ id: doc.id, ...doc.data() });
+    });
 
     // Create the data directory if it doesn't exist
     const dataDir = join(__dirname, "src", "data");

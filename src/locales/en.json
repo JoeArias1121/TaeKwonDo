@@ -25,7 +25,9 @@
     "mission_description": "To preserve and teach the original, authentic techniques of Taekwon-Do as created by General Choi Hong Hi. We strive to develop our students physically, mentally, and morally, creating leaders who contribute positively to society.",
     "news_title": "Latest News",
     "news_description": "Stay updated with our latest events, belt testings, and tournament results. Our community is constantly growing and celebrating new milestones.",
-    "view_events": "View Upcoming Events"
+    "view_events": "View Upcoming Events",
+    "gallery_title": "Our Dojo Gallery",
+    "gallery_subtitle": "A visual showcase of our training, spirit, and community."
   },
   "events": {
     "title": "Upcoming Events",
@@ -87,6 +89,7 @@
       "members": "Members",
       "about_me": "About Me",
       "approvals": "Approvals",
+      "gallery": "Gallery",
       "home_page": "Home Page",
       "sign_out": "Sign Out"
     },
@@ -125,7 +128,9 @@
       "toast_error_save": "Error saving event: ",
       "confirm_delete": "Are you sure you want to delete this event? This action cannot be undone.",
       "toast_deleted": "Event deleted.",
-      "toast_error_delete": "Failed to delete event: "
+      "toast_error_delete": "Failed to delete event: ",
+      "btn_edit_tooltip": "Edit Event",
+      "btn_delete_tooltip": "Delete Event"
     },
     "members": {
       "title": "Members Directory",
@@ -154,7 +159,9 @@
       "toast_error_save": "Error saving member: ",
       "confirm_delete": "Are you sure you want to remove ",
       "toast_deleted": "Member removed.",
-      "toast_error_delete": "Failed to delete member: "
+      "toast_error_delete": "Failed to delete member: ",
+      "btn_edit_tooltip": "Edit Member",
+      "btn_delete_tooltip": "Remove Member"
     },
     "about": {
       "title": "Edit 'About Me'",
@@ -184,6 +191,37 @@
       "confirm_reject": "Are you sure you want to reject this request? This will delete their database presence.",
       "toast_rejected": "Request rejected.",
       "toast_error_reject": "Error rejecting user: "
+    },
+    "gallery": {
+      "title": "Gallery Management",
+      "subtitle": "Upload and organize photos for your homepage gallery (Max 8 images).",
+      "new_image": "Add Image",
+      "no_images": "No images found. Click \"Add Image\" to fill a slot.",
+      "edit_image": "Edit Image",
+      "create_image": "Add New Image",
+      "form_order": "Display Order (1 - 8)",
+      "form_image": "Gallery Image",
+      "form_image_hint": "(Leave empty to keep current)",
+      "form_image_select": "Choose image...",
+      "form_image_browse": "Browse",
+      "btn_cancel": "Cancel",
+      "btn_saving": "Saving...",
+      "btn_update": "Update Image",
+      "btn_save": "Save Image",
+      "toast_image_req": "An image is required for new gallery items!",
+      "toast_saving": "Uploading image and saving gallery item...",
+      "toast_updating": "Updating gallery item...",
+      "toast_success_update": "Gallery item updated successfully!",
+      "toast_success_create": "Gallery item added successfully!",
+      "toast_error_save": "Error saving gallery item: ",
+      "confirm_delete": "Are you sure you want to delete this gallery item? This action cannot be undone.",
+      "toast_deleted": "Gallery item deleted.",
+      "toast_error_delete": "Failed to delete gallery item: ",
+      "slot_empty": "Slot {slot} (Empty)",
+      "slot_occupied": "Slot {slot}",
+      "btn_edit_tooltip": "Edit Image",
+      "btn_delete_tooltip": "Delete Image",
+      "btn_add_photo": "Add photo"
     }
   }
 }

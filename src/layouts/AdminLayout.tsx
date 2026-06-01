@@ -11,6 +11,7 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
+  Image as ImageIcon,
 } from "lucide-react";
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -41,6 +42,11 @@ export default function AdminLayout() {
       name: content.admin.sidebar.about_me,
       path: "/admin/about",
       icon: <FileText size={20} />,
+    },
+    {
+      name: content.admin.sidebar.gallery,
+      path: "/admin/gallery",
+      icon: <ImageIcon size={20} />,
     },
   ];
 

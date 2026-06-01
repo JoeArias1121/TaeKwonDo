@@ -25,7 +25,9 @@
     "mission_description": "Preservar y enseñar las técnicas originales y auténticas del Taekwon-Do creadas por el General Choi Hong Hi. Nos esforzamos por desarrollar a nuestros estudiantes física, mental y moralmente, creando líderes que contribuyan positivamente a la sociedad.",
     "news_title": "Últimas Noticias",
     "news_description": "Mantente al día con nuestros últimos eventos, exámenes de cinturón y resultados de torneos. Nuestra comunidad crece y celebra nuevos logros constantemente.",
-    "view_events": "Ver Próximos Eventos"
+    "view_events": "Ver Próximos Eventos",
+    "gallery_title": "Galería de Nuestro Dojo",
+    "gallery_subtitle": "Una muestra visual de nuestro entrenamiento, espíritu y comunidad."
   },
   "events": {
     "title": "Próximos Eventos",
@@ -87,6 +89,7 @@
       "members": "Miembros",
       "about_me": "Sobre Mí",
       "approvals": "Aprobaciones",
+      "gallery": "Galería",
       "home_page": "Página Principal",
       "sign_out": "Cerrar Sesión"
     },
@@ -125,7 +128,9 @@
       "toast_error_save": "Error al guardar el evento: ",
       "confirm_delete": "¿Estás seguro de que deseas eliminar este evento? Esta acción no se puede deshacer.",
       "toast_deleted": "Evento eliminado.",
-      "toast_error_delete": "Error al eliminar el evento: "
+      "toast_error_delete": "Error al eliminar el evento: ",
+      "btn_edit_tooltip": "Editar Evento",
+      "btn_delete_tooltip": "Eliminar Evento"
     },
     "members": {
       "title": "Directorio de Miembros",
@@ -154,7 +159,9 @@
       "toast_error_save": "Error al guardar el miembro: ",
       "confirm_delete": "¿Estás seguro de que deseas eliminar a ",
       "toast_deleted": "Miembro eliminado.",
-      "toast_error_delete": "Error al eliminar el miembro: "
+      "toast_error_delete": "Error al eliminar el miembro: ",
+      "btn_edit_tooltip": "Editar Miembro",
+      "btn_delete_tooltip": "Eliminar Miembro"
     },
     "about": {
       "title": "Editar 'Sobre Mí'",
@@ -184,6 +191,37 @@
       "confirm_reject": "¿Estás seguro de que deseas rechazar esta solicitud? Esto eliminará su presencia en la base de datos.",
       "toast_rejected": "Solicitud rechazada.",
       "toast_error_reject": "Error al rechazar al usuario: "
+    },
+    "gallery": {
+      "title": "Gestión de Galería",
+      "subtitle": "Sube y organiza fotos para la galería de tu página de inicio (Máximo 8 imágenes).",
+      "new_image": "Añadir Imagen",
+      "no_images": "No se encontraron imágenes. Haz clic en \"Añadir Imagen\" para llenar un espacio.",
+      "edit_image": "Editar Imagen",
+      "create_image": "Añadir Nueva Imagen",
+      "form_order": "Orden de Visualización (1 - 8)",
+      "form_image": "Imagen de Galería",
+      "form_image_hint": "(Déjalo vacío para mantener la actual)",
+      "form_image_select": "Seleccionar imagen...",
+      "form_image_browse": "Buscar",
+      "btn_cancel": "Cancelar",
+      "btn_saving": "Guardando...",
+      "btn_update": "Actualizar Imagen",
+      "btn_save": "Guardar Imagen",
+      "toast_image_req": "¡Se requiere una imagen para los nuevos elementos de la galería!",
+      "toast_saving": "Subiendo imagen y guardando elemento de la galería...",
+      "toast_updating": "Actualizando elemento de la galería...",
+      "toast_success_update": "¡Elemento de la galería actualizado exitosamente!",
+      "toast_success_create": "¡Elemento de la galería añadido exitosamente!",
+      "toast_error_save": "Error al guardar el elemento de la galería: ",
+      "confirm_delete": "¿Estás seguro de que deseas eliminar este elemento de la galería? Esta acción no se puede deshacer.",
+      "toast_deleted": "Elemento de la galería eliminado.",
+      "toast_error_delete": "Error al eliminar el elemento de la galería: ",
+      "slot_empty": "Espacio {slot} (Vacío)",
+      "slot_occupied": "Espacio {slot}",
+      "btn_edit_tooltip": "Editar Imagen",
+      "btn_delete_tooltip": "Eliminar Imagen",
+      "btn_add_photo": "Añadir foto"
     }
   }
 }

@@ -56,3 +56,12 @@ export interface AboutMeData {
   en: AboutLangMap;
   es: AboutLangMap;
 }
+
+export interface GalleryItem {
+  id: string;
+  imageUrl: string;
+  order: number; // 1 to 8
+  createdAt?: string;
+  updatedAt?: string;
+}
+

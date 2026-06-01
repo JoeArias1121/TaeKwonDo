@@ -99,14 +99,14 @@ export default function MembersManager() {
                   <button
                     onClick={() => handleEdit(member)}
                     className="text-primary bg-primary/10 hover:bg-primary/20 p-2 rounded-xl transition-all shadow-sm active:scale-95"
-                    title="Edit Member"
+                    title={content.admin.members.btn_edit_tooltip}
                   >
                     <Edit size={18} />
                   </button>
                   <button
                     onClick={() => handleDelete(member.id, member.name)}
                     className="text-destructive bg-destructive/10 hover:bg-destructive/20 p-2 rounded-xl transition-all shadow-sm active:scale-95"
-                    title="Remove Member"
+                    title={content.admin.members.btn_delete_tooltip}
                   >
                     <Trash2 size={18} />
                   </button>
