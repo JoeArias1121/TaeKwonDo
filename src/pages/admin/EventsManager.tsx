@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Trash2,
   Plus,
@@ -11,6 +12,7 @@ import { EventModal } from "./components/EventModal";
 
 export default function EventsManager() {
   const { content, language } = useLanguage();
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
   const {
     events,
     loading,
@@ -74,14 +76,17 @@ export default function EventsManager() {
           events.map((evt) => (
             <div
               key={evt.id}
-              className="bg-card border rounded-3xl p-6 flex flex-col gap-6 shadow-sm overflow-hidden w-full max-w-md h-full transition-all hover:shadow-md border-border/60"
+              className="bg-card border rounded-3xl p-6 flex flex-col gap-4 shadow-sm overflow-hidden w-full max-w-md h-full transition-all hover:shadow-md border-border/60"
             >
-              <div className="w-full h-48 bg-secondary/20 rounded-2xl overflow-hidden flex-shrink-0 border border-border/40">
+              <div 
+                onClick={() => evt.imageUrl && setSelectedImageUrl(evt.imageUrl)}
+                className="w-full h-56 bg-secondary/20 rounded-2xl overflow-hidden flex-shrink-0 border border-border/40 cursor-pointer periodic-jiggle"
+              >
                 {evt.imageUrl ? (
                   <img
                     src={evt.imageUrl}
                     alt={evt[language]?.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground">
@@ -90,7 +95,7 @@ export default function EventsManager() {
                 )}
               </div>
               <div className="flex-grow flex flex-col min-w-0">
-                <div className="flex justify-between items-start gap-2 mb-3">
+                <div className="flex justify-between items-start gap-2 mb-1.5">
                   <h3 className="font-heading font-black text-xl line-clamp-1 break-words leading-tight">
                     {evt[language]?.title}
                   </h3>
@@ -98,11 +103,11 @@ export default function EventsManager() {
                     {evt[language]?.eventType}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground mb-6 line-clamp-4 break-words leading-relaxed">
+                <p className="text-sm text-muted-foreground mb-3 line-clamp-4 break-words leading-relaxed">
                   {evt[language]?.description}
                 </p>
 
-                <div className="text-[11px] font-bold text-foreground/80 bg-secondary/30 rounded-xl p-3 flex flex-col gap-2 mb-4 border border-border/50">
+                <div className="text-[11px] font-bold text-foreground/80 bg-secondary/30 rounded-xl p-3 flex flex-col gap-2 mb-3 border border-border/50">
                   <div className="flex justify-between items-center gap-4">
                     <div className="flex items-center gap-1.5 truncate">
                       <span className="text-primary">📅</span> {evt.date}
@@ -159,6 +164,21 @@ export default function EventsManager() {
         onSave={handleSave}
         saving={saving}
       />
+
+      {/* Lightbox Modal */}
+      {selectedImageUrl && (
+        <div
+          onClick={() => setSelectedImageUrl(null)}
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] cursor-zoom-out p-4"
+        >
+          <img
+            src={selectedImageUrl}
+            alt="Event Detail"
+            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl select-none"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }

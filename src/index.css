@@ -177,3 +177,15 @@ iframe.goog-te-banner-frame {
 .VIpgJd-ZVi9od-ORHb-OEVmcd {
   display: none !important;
 }
+
+/* Periodic Jiggle Animation */
+@keyframes periodic-wiggle {
+  0%, 8%, 100% { transform: rotate(0deg); }
+  2% { transform: rotate(-1.5deg); }
+  4% { transform: rotate(1.5deg); }
+  6% { transform: rotate(-1.5deg); }
+}
+
+@utility periodic-jiggle {
+  animation: periodic-wiggle 3s ease-in-out infinite;
+}
