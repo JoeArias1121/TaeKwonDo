@@ -47,10 +47,10 @@ export default function Home() {
               {content.home.start_journey} <ArrowRight size={20} />
             </Link>
             <Link
-              to="/aboutme"
+              to="/eboard"
               className="px-8 py-4 bg-secondary text-secondary-foreground rounded-full font-semibold hover:bg-secondary/80 transition-all flex items-center justify-center"
             >
-              {content.home.about_me}
+              {content.home.eboard}
             </Link>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "@/pages/public/Home";
-import AboutMe from "@/pages/public/AboutMe";
+import ExecutiveBoard from "@/pages/public/ExecutiveBoard";
 import Contact from "@/pages/public/Contact";
 import Members from "@/pages/public/Members";
 import Events from "@/pages/public/Events";
@@ -11,7 +11,7 @@ import PendingApproval from "@/pages/auth/PendingApproval";
 import Dashboard from "@/pages/admin/Dashboard";
 import EventsManager from "@/pages/admin/EventsManager";
 import MembersManager from "@/pages/admin/MembersManager";
-import AboutEditor from "@/pages/admin/AboutEditor";
+import BoardEditor from "@/pages/admin/BoardEditor";
 import Approvals from "@/pages/admin/Approvals";
 import GalleryManager from "@/pages/admin/GalleryManager";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/aboutme" element={<AboutMe />} />
+          <Route path="/eboard" element={<ExecutiveBoard />} />
           <Route path="/events" element={<Events />} />
           <Route path="/members" element={<Members />} />
           <Route path="/contact" element={<Contact />} />
@@ -46,7 +46,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="events" element={<EventsManager />} />
           <Route path="members" element={<MembersManager />} />
-          <Route path="about" element={<AboutEditor />} />
+          <Route path="board" element={<BoardEditor />} />
           <Route path="approvals" element={<Approvals />} />
           <Route path="gallery" element={<GalleryManager />} />
         </Route>

@@ -40,7 +40,7 @@ export default function AdminLayout() {
     },
     {
       name: content.admin.sidebar.about_me,
-      path: "/admin/about",
+      path: "/admin/board",
       icon: <FileText size={20} />,
     },
     {

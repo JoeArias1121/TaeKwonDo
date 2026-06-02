@@ -43,18 +43,31 @@ export interface DojoMember {
   sourceLang?: string;
 }
 
-export interface AboutLangMap {
-  title: string;
+export interface BoardLangMap {
   role: string;
   bio: string;
+  belt: string;
 }
 
-export interface AboutMeData {
+export interface PresidentData {
+  name: string;
   imageUrl?: string;
   sourceLang?: string;
   updatedAt?: string;
-  en: AboutLangMap;
-  es: AboutLangMap;
+  en: BoardLangMap;
+  es: BoardLangMap;
+}
+
+export interface BoardMember {
+  id: string;
+  name: string;
+  imageUrl: string;
+  order: number;
+  createdAt?: string;
+  updatedAt?: string;
+  en: BoardLangMap;
+  es: BoardLangMap;
+  sourceLang?: string;
 }
 
 export interface GalleryItem {

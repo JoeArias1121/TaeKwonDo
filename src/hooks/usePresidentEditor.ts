@@ -4,18 +4,18 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/lib/firebase";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
-import type { AboutMeData } from "@/types";
+import type { PresidentData } from "@/types";
 import { translateText } from "@/api/translate";
 import { optimizeImage } from "@/lib/imageOptimization";
 
-export function useAboutEditor() {
+export function usePresidentEditor() {
   const { content, language } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   // Form State
-  const [title, setTitle] = useState("");
-  const [role, setRole] = useState("");
+  const [name, setName] = useState("");
+  const [belt, setBelt] = useState("");
   const [bio, setBio] = useState("");
 
   // Image handling
@@ -25,19 +25,19 @@ export function useAboutEditor() {
   const fetchAboutData = async () => {
     try {
       setLoading(true);
-      const aboutDoc = await getDoc(doc(db, "settings", "aboutMe"));
+      const aboutDoc = await getDoc(doc(db, "settings", "president"));
       if (aboutDoc.exists()) {
-        const data = aboutDoc.data() as AboutMeData;
+        const data = aboutDoc.data() as PresidentData;
+        setName(data.name || "");
         const langMap = data[language];
-        setTitle(langMap?.title || "");
-        setRole(langMap?.role || "");
+        setBelt(langMap?.belt || "");
         setBio(langMap?.bio || "");
         setCurrentImageUrl(data.imageUrl || "");
       }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unknown error occurred";
-      toast.error("Failed to load about data: " + errorMessage);
+      toast.error("Failed to load President data: " + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ export function useAboutEditor() {
 
       if (imageFile) {
         const optimizedFile = await optimizeImage(imageFile);
-        const storageRef = ref(storage, `settings/about_avatar_${Date.now()}`);
+        const storageRef = ref(storage, `settings/president_avatar_${Date.now()}`);
 
         const metadata = {
           contentType: "image/webp",
@@ -71,50 +71,46 @@ export function useAboutEditor() {
       }
 
       const oppositeLang = language === "en" ? "es" : "en";
-      let translatedTitle = "";
-      let translatedRole = "";
       let translatedBio = "";
+      let translatedBelt = "";
 
-      const docSnap = await getDoc(doc(db, "settings", "aboutMe"));
-      const existingData = docSnap.exists() ? (docSnap.data() as AboutMeData) : null;
+      const docSnap = await getDoc(doc(db, "settings", "president"));
+      const existingData = docSnap.exists() ? (docSnap.data() as PresidentData) : null;
 
       if (existingData) {
-        if (title !== existingData[language]?.title) {
-          translatedTitle = await translateText(title, oppositeLang);
-        } else {
-          translatedTitle = existingData[oppositeLang]?.title || "";
-        }
-
-        if (role !== existingData[language]?.role) {
-          translatedRole = await translateText(role, oppositeLang);
-        } else {
-          translatedRole = existingData[oppositeLang]?.role || "";
-        }
-
         if (bio !== existingData[language]?.bio) {
           translatedBio = await translateText(bio, oppositeLang);
         } else {
           translatedBio = existingData[oppositeLang]?.bio || "";
         }
+
+        if (belt !== existingData[language]?.belt) {
+          translatedBelt = await translateText(belt, oppositeLang);
+        } else {
+          translatedBelt = existingData[oppositeLang]?.belt || "";
+        }
       } else {
-        translatedTitle = await translateText(title, oppositeLang);
-        translatedRole = await translateText(role, oppositeLang);
         translatedBio = await translateText(bio, oppositeLang);
+        translatedBelt = await translateText(belt, oppositeLang);
       }
 
-      const saveData: AboutMeData = {
+      const presEnRole = "President";
+      const presEsRole = "Presidente";
+
+      const saveData: PresidentData = {
+        name,
         en: language === "en"
-          ? { title, role, bio }
-          : { title: translatedTitle, role: translatedRole, bio: translatedBio },
+          ? { role: presEnRole, bio, belt }
+          : { role: presEnRole, bio: translatedBio, belt: translatedBelt },
         es: language === "es"
-          ? { title, role, bio }
-          : { title: translatedTitle, role: translatedRole, bio: translatedBio },
+          ? { role: presEsRole, bio, belt }
+          : { role: presEsRole, bio: translatedBio, belt: translatedBelt },
         sourceLang: language,
         imageUrl: finalImageUrl,
         updatedAt: new Date().toISOString(),
       };
 
-      await setDoc(doc(db, "settings", "aboutMe"), saveData, { merge: true });
+      await setDoc(doc(db, "settings", "president"), saveData, { merge: true });
 
       toast.success(content.admin.about.toast_success, { id: loadingToast });
       setImageFile(null);
@@ -132,10 +128,10 @@ export function useAboutEditor() {
   return {
     loading,
     saving,
-    title,
-    setTitle,
-    role,
-    setRole,
+    name,
+    setName,
+    belt,
+    setBelt,
     bio,
     setBio,
     currentImageUrl,

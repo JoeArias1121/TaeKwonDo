@@ -31,7 +31,8 @@ async function fetchContent() {
   const data = {
     events: [],
     members: [],
-    aboutMe: { content: "" },
+    president: null,
+    boardMembers: [],
     gallery: [],
   };
 
@@ -48,16 +49,22 @@ async function fetchContent() {
       data.members.push({ id: doc.id, ...doc.data() });
     });
 
-    // 3. Fetch About Me Settings
-    const aboutSnap = await db.collection("settings").doc("aboutMe").get();
-    if (aboutSnap.exists) {
-      data.aboutMe = aboutSnap.data();
+    // 3. Fetch President Settings
+    const presidentSnap = await db.collection("settings").doc("president").get();
+    if (presidentSnap.exists) {
+      data.president = presidentSnap.data();
     }
 
     // 4. Fetch Gallery Items (Sorted by order asc)
     const gallerySnap = await db.collection("gallery").orderBy("order", "asc").get();
     gallerySnap.forEach((doc) => {
       data.gallery.push({ id: doc.id, ...doc.data() });
+    });
+
+    // 5. Fetch Board Members (Sorted by order asc)
+    const boardSnap = await db.collection("boardMembers").orderBy("order", "asc").get();
+    boardSnap.forEach((doc) => {
+      data.boardMembers.push({ id: doc.id, ...doc.data() });
     });
 
     // Create the data directory if it doesn't exist

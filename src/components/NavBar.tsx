@@ -21,7 +21,7 @@ export default function NavBar() {
 
   const links = [
     { name: content.nav.home, path: "/" },
-    { name: content.nav.about, path: "/aboutme" },
+    { name: content.nav.about, path: "/eboard" },
     { name: content.nav.members, path: "/members" },
     { name: content.nav.events, path: "/events" },
     { name: content.nav.contact, path: "/contact" },
